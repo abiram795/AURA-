@@ -1,0 +1,589 @@
+[
+  {
+    "id": "c1",
+    "title": "Intro to Prompt Engineering",
+    "description": "Master the art of communicating with Large Language Models. Learn Zero-Shot, Few-Shot, and Chain of Thought prompting.",
+    "instructorId": "u3",
+    "instructorName": "Dr. Sarah Chen",
+    "image": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=500&auto=format&fit=crop&q=60",
+    "category": "Prompt Engineering",
+    "difficulty": "Beginner",
+    "duration": "3h 45m",
+    "price": 29.99,
+    "xpReward": 200,
+    "modules": [
+      {
+        "id": "c1_m1",
+        "title": "Module 1: Foundations of Prompting",
+        "lessons": [
+          {
+            "id": "c1_m1_l1",
+            "title": "What is a Prompt?",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            "content": "<p>A prompt is the text inputs sent to an LLM. It acts as the instruction manual, contextual backdrop, and data source all in one.</p>",
+            "downloads": [{ "name": "Cheat Sheet: Core Prompt Components.pdf", "url": "/assets/downloads/cheat_sheet_core_components.pdf" }]
+          },
+          {
+            "id": "c1_m1_l2",
+            "title": "Zero-Shot vs Few-Shot Prompting",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+            "content": "<p>Zero-shot prompting performs tasks directly. Few-shot prompting provides one or more examples to demonstrate desired behaviors.</p>",
+            "downloads": [{ "name": "Few-Shot Templates.pdf", "url": "/assets/downloads/few_shot_templates.pdf" }]
+          }
+        ]
+      }
+    ],
+    "quizzes": [
+      {
+        "id": "c1_q1",
+        "lessonId": "c1_m1_l2",
+        "title": "Foundations of Prompting Quiz",
+        "questions": [
+          {
+            "question": "Which prompting technique involves providing example input-output pairs to guide the model?",
+            "options": [
+              "Zero-Shot prompting",
+              "Few-Shot prompting",
+              "Negative prompting",
+              "System prompting"
+            ],
+            "correctAnswerIndex": 1,
+            "explanation": "Few-shot prompting provides example pairs directly in the prompt context to guide the model's output layout."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "c2",
+    "title": "Generative AI for Creators",
+    "description": "Unlock creative workflows. Master Midjourney, DALL-E, and prompt patterns for generating art, audio, and video designs.",
+    "instructorId": "u4",
+    "instructorName": "Liam Carter",
+    "image": "https://images.unsplash.com/photo-1547891654-e66ed7edd96c?w=500&auto=format&fit=crop&q=60",
+    "category": "Generative Media",
+    "difficulty": "Beginner",
+    "duration": "2h 30m",
+    "price": 49.99,
+    "xpReward": 150,
+    "modules": [
+      {
+        "id": "c2_m1",
+        "title": "Module 1: AI Image Generation",
+        "lessons": [
+          {
+            "id": "c2_m1_l1",
+            "title": "Text-to-Image Diffusion Models",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+            "content": "<p>Diffusion models generate images by iteratively removing Gaussian noise guided by a text prompt embedding.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c3",
+    "title": "Deep Learning Foundations",
+    "description": "Mathematical systems behind neural networks. Deep dive into backpropagation, loss functions, activation curves, and vectors.",
+    "instructorId": "u6",
+    "instructorName": "Prof. Geoffrey Hinton",
+    "image": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?w=500&auto=format&fit=crop&q=60",
+    "category": "Deep Learning",
+    "difficulty": "Advanced",
+    "duration": "5h 15m",
+    "price": 99.99,
+    "xpReward": 300,
+    "modules": [
+      {
+        "id": "c3_m1",
+        "title": "Module 1: Neurons and Activations",
+        "lessons": [
+          {
+            "id": "c3_m1_l1",
+            "title": "Neurons and Activation Functions",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+            "content": "<p>Activations introduce non-linearity, allowing networks to learn complex decision boundaries.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c4",
+    "title": "Computer Vision & ImageNet",
+    "description": "Learn Convolutional Neural Networks (CNNs), object detection filters, bounding boxes, and large-scale vision indexing.",
+    "instructorId": "u7",
+    "instructorName": "Dr. Fei-Fei Li",
+    "image": "https://images.unsplash.com/photo-1527474305487-b87b222841cc?w=500&auto=format&fit=crop&q=60",
+    "category": "Computer Vision",
+    "difficulty": "Advanced",
+    "duration": "4h 20m",
+    "price": 79.99,
+    "xpReward": 250,
+    "modules": [
+      {
+        "id": "c4_m1",
+        "title": "Module 1: CNN Core Filters",
+        "lessons": [
+          {
+            "id": "c4_m1_l1",
+            "title": "Introduction to Convolution Filters",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            "content": "<p>Filters slide over pixel arrays to extract edges, contours, and texture signatures.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c5",
+    "title": "AI Safety & Turing Alignment",
+    "description": "Address critical safety challenges, mathematical superalignment, agent containment bounds, and ethics guidelines.",
+    "instructorId": "u5",
+    "instructorName": "Dr. Alan Turing",
+    "image": "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=500&auto=format&fit=crop&q=60",
+    "category": "AI Safety",
+    "difficulty": "Intermediate",
+    "duration": "2h 45m",
+    "price": 0.00,
+    "xpReward": 150,
+    "modules": [
+      {
+        "id": "c5_m1",
+        "title": "Module 1: Enforcing Containment bounds",
+        "lessons": [
+          {
+            "id": "c5_m1_l1",
+            "title": "The Alignment Problem",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+            "content": "<p>How can we guarantee that systems many times smarter than humans remain helpful and aligned to human values?</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c6",
+    "title": "Natural Language Processing (NLP)",
+    "description": "Understand word embeddings, tokenizers, bag-of-words, TF-IDF, and initial sequence models like RNNs and LSTMs.",
+    "instructorId": "u3",
+    "instructorName": "Dr. Sarah Chen",
+    "image": "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=500&auto=format&fit=crop&q=60",
+    "category": "NLP",
+    "difficulty": "Intermediate",
+    "duration": "3h 10m",
+    "price": 39.99,
+    "xpReward": 200,
+    "modules": [
+      {
+        "id": "c6_m1",
+        "title": "Module 1: Sequence Vectors",
+        "lessons": [
+          {
+            "id": "c6_m1_l1",
+            "title": "Vector Embeddings & Cosine Similarity",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+            "content": "<p>Words are mapped into multidimensional vector spaces where conceptual relationships resolve to mathematical distances.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c7",
+    "title": "Neural Networks from Scratch",
+    "description": "Code backpropagation, gradients, and matrix dot products in raw Python using NumPy arrays.",
+    "instructorId": "u6",
+    "instructorName": "Prof. Geoffrey Hinton",
+    "image": "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=500&auto=format&fit=crop&q=60",
+    "category": "Deep Learning",
+    "difficulty": "Advanced",
+    "duration": "6h 00m",
+    "price": 89.99,
+    "xpReward": 350,
+    "modules": [
+      {
+        "id": "c7_m1",
+        "title": "Module 1: Matrix Calculus",
+        "lessons": [
+          {
+            "id": "c7_m1_l1",
+            "title": "Coding Backpropagation Steps",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+            "content": "<p>Compute partial derivatives of loss functions to update neuron weights.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c8",
+    "title": "Advanced Prompt Techniques",
+    "description": "Learn system engineering prompt structures, jailbreak defense patterns, and API token budgeting.",
+    "instructorId": "u3",
+    "instructorName": "Dr. Sarah Chen",
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=500&auto=format&fit=crop&q=60",
+    "category": "Prompt Engineering",
+    "difficulty": "Intermediate",
+    "duration": "2h 15m",
+    "price": 49.99,
+    "xpReward": 150,
+    "modules": [
+      {
+        "id": "c8_m1",
+        "title": "Module 1: System Prompts Defenses",
+        "lessons": [
+          {
+            "id": "c8_m1_l1",
+            "title": "Preventing Prompt Injections",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            "content": "<p>Isolate user parameters from system execution guidelines to prevent malicious overrides.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c9",
+    "title": "Stable Diffusion & Midjourney",
+    "description": "Master generating photo-realistic images. Control lighting, aspect ratios, seeds, and local Stable Diffusion setups.",
+    "instructorId": "u4",
+    "instructorName": "Liam Carter",
+    "image": "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=500&auto=format&fit=crop&q=60",
+    "category": "Generative Media",
+    "difficulty": "Beginner",
+    "duration": "3h 05m",
+    "price": 39.99,
+    "xpReward": 180,
+    "modules": [
+      {
+        "id": "c9_m1",
+        "title": "Module 1: Seed Control Mastery",
+        "lessons": [
+          {
+            "id": "c9_m1_l1",
+            "title": "Fine-Tuning Generation Seeds",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+            "content": "<p>Lock generator seeds to maintain structural details across edits.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c10",
+    "title": "Introduction to AI Agents",
+    "description": "Build automated agent scripts using LangChain. Understand tool routing, loops, memory, and database actions.",
+    "instructorId": "u3",
+    "instructorName": "Dr. Sarah Chen",
+    "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60",
+    "category": "Prompt Engineering",
+    "difficulty": "Intermediate",
+    "duration": "4h 10m",
+    "price": 59.99,
+    "xpReward": 250,
+    "modules": [
+      {
+        "id": "c10_m1",
+        "title": "Module 1: ReAct Framework",
+        "lessons": [
+          {
+            "id": "c10_m1_l1",
+            "title": "Reason and Action Loops",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+            "content": "<p>Combine semantic thinking steps with physical tool executions in automated feedback loops.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c11",
+    "title": "Reinforcement Learning",
+    "description": "Understand Markov Decision Processes, Q-learning, policy gradients, rewards structures, and environment maps.",
+    "instructorId": "u5",
+    "instructorName": "Dr. Alan Turing",
+    "image": "https://images.unsplash.com/photo-1516116211223-5c359a36298a?w=500&auto=format&fit=crop&q=60",
+    "category": "Deep Learning",
+    "difficulty": "Advanced",
+    "duration": "5h 00m",
+    "price": 79.99,
+    "xpReward": 300,
+    "modules": [
+      {
+        "id": "c11_m1",
+        "title": "Module 1: Policy Calculations",
+        "lessons": [
+          {
+            "id": "c11_m1_l1",
+            "title": "Exploration vs Exploitation",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+            "content": "<p>Tune exploration probabilities to discover rewards while leveraging known paths.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c12",
+    "title": "Large Language Models (LLM)",
+    "description": "Trace the transformer pipeline: embeddings, attention blocks, softmax classifications, and fine-tuning configurations.",
+    "instructorId": "u6",
+    "instructorName": "Prof. Geoffrey Hinton",
+    "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&auto=format&fit=crop&q=60",
+    "category": "NLP",
+    "difficulty": "Advanced",
+    "duration": "5h 45m",
+    "price": 129.99,
+    "xpReward": 300,
+    "modules": [
+      {
+        "id": "c12_m1",
+        "title": "Module 1: Self-Attention Mechanics",
+        "lessons": [
+          {
+            "id": "c12_m1_l1",
+            "title": "Queries, Keys, and Vectors math",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            "content": "<p>Mathematical projections scoring word dependencies across sentences.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c13",
+    "title": "Generative Adversarial Nets",
+    "description": "Code generator and discriminator loops to generate hyper-realistic fake faces and art patterns.",
+    "instructorId": "u4",
+    "instructorName": "Liam Carter",
+    "image": "https://images.unsplash.com/photo-1544924793-000c02967f6b?w=500&auto=format&fit=crop&q=60",
+    "category": "Generative Media",
+    "difficulty": "Advanced",
+    "duration": "3h 40m",
+    "price": 49.99,
+    "xpReward": 250,
+    "modules": [
+      {
+        "id": "c13_m1",
+        "title": "Module 1: Minimax Games",
+        "lessons": [
+          {
+            "id": "c13_m1_l1",
+            "title": "Training Generator Loss Vectors",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+            "content": "<p>Balance discriminator capabilities to encourage generators to create realistic images.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c14",
+    "title": "Convolutional Neural Nets",
+    "description": "Deep dive CNN pooling layers, kernel dimensions, stride margins, padding sizes, and feature extraction.",
+    "instructorId": "u7",
+    "instructorName": "Dr. Fei-Fei Li",
+    "image": "https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=500&auto=format&fit=crop&q=60",
+    "category": "Computer Vision",
+    "difficulty": "Intermediate",
+    "duration": "4h 05m",
+    "price": 69.99,
+    "xpReward": 220,
+    "modules": [
+      {
+        "id": "c14_m1",
+        "title": "Module 1: Feature Maps",
+        "lessons": [
+          {
+            "id": "c14_m1_l1",
+            "title": "Strides and Pooling layers",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+            "content": "<p>Reduce resolution maps while retaining critical visual information.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c15",
+    "title": "AI Hallucination & Ethics",
+    "description": "Understand why large sequence models hallucinate facts. Review metrics to detect and prevent errors.",
+    "instructorId": "u5",
+    "instructorName": "Dr. Alan Turing",
+    "image": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=500&auto=format&fit=crop&q=60",
+    "category": "AI Safety",
+    "difficulty": "Beginner",
+    "duration": "1h 45m",
+    "price": 0.00,
+    "xpReward": 100,
+    "modules": [
+      {
+        "id": "c15_m1",
+        "title": "Module 1: Hallucination Metrics",
+        "lessons": [
+          {
+            "id": "c15_m1_l1",
+            "title": "Why LLMs Fabricate Answers",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+            "content": "<p>Next token prediction prioritizes grammatical likelihood over actual fact databases.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c16",
+    "title": "User Centered AI Design",
+    "description": "Learn to design helpful system interfaces, user chat overlays, feedback sliders, and alignment parameters.",
+    "instructorId": "u3",
+    "instructorName": "Dr. Sarah Chen",
+    "image": "https://images.unsplash.com/photo-1541462608141-2ff580de097a?w=500&auto=format&fit=crop&q=60",
+    "category": "Generative Media",
+    "difficulty": "Beginner",
+    "duration": "2h 10m",
+    "price": 59.99,
+    "xpReward": 150,
+    "modules": [
+      {
+        "id": "c16_m1",
+        "title": "Module 1: Chat UI structures",
+        "lessons": [
+          {
+            "id": "c16_m1_l1",
+            "title": "Designing Streaming Outputs",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            "content": "<p>Increase perceived response speeds using token-by-token streaming layouts.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c17",
+    "title": "Transformer Architectures",
+    "description": "Trace the transformer pipeline: encoder-decoder layers, positional embeddings, and multi-head self-attentions.",
+    "instructorId": "u6",
+    "instructorName": "Prof. Geoffrey Hinton",
+    "image": "https://images.unsplash.com/photo-1520697830682-bbb6e85e2b0b?w=500&auto=format&fit=crop&q=60",
+    "category": "Deep Learning",
+    "difficulty": "Advanced",
+    "duration": "6h 15m",
+    "price": 119.99,
+    "xpReward": 350,
+    "modules": [
+      {
+        "id": "c17_m1",
+        "title": "Module 1: Positional encodings",
+        "lessons": [
+          {
+            "id": "c17_m1_l1",
+            "title": " positional sine & cosine functions",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+            "content": "<p>Preserve text order information without sequential recurrence loops.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c18",
+    "title": "Creative Art Prompting",
+    "description": "Learn key lighting variables, camera focus cues, and rendering descriptors to control image generators.",
+    "instructorId": "u4",
+    "instructorName": "Liam Carter",
+    "image": "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=500&auto=format&fit=crop&q=60",
+    "category": "Generative Media",
+    "difficulty": "Beginner",
+    "duration": "2h 00m",
+    "price": 29.99,
+    "xpReward": 120,
+    "modules": [
+      {
+        "id": "c18_m1",
+        "title": "Module 1: Camera Descriptors",
+        "lessons": [
+          {
+            "id": "c18_m1_l1",
+            "title": "Controlling Focal Ranges",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+            "content": "<p>Specify aperture values (f/1.8) to blur backgrounds and focus details.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c19",
+    "title": "ImageNet & Large Scale Data",
+    "description": "Learn to manage datasets. Explore data augmentation, crops, folds, and metadata tagging pipelines.",
+    "instructorId": "u7",
+    "instructorName": "Dr. Fei-Fei Li",
+    "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&auto=format&fit=crop&q=60",
+    "category": "Computer Vision",
+    "difficulty": "Intermediate",
+    "duration": "4h 40m",
+    "price": 49.99,
+    "xpReward": 250,
+    "modules": [
+      {
+        "id": "c19_m1",
+        "title": "Module 1: Data Augmentation",
+        "lessons": [
+          {
+            "id": "c19_m1_l1",
+            "title": "Random Rotations and Crops",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+            "content": "<p>Rotate and warp training images to increase classifier robustness.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  },
+  {
+    "id": "c20",
+    "title": "Artificial General Intelligence",
+    "description": "Assess definitions of machine sentience, test constraints, vector intelligence scale, and safety frameworks.",
+    "instructorId": "u5",
+    "instructorName": "Dr. Alan Turing",
+    "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=500&auto=format&fit=crop&q=60",
+    "category": "AI Safety",
+    "difficulty": "Advanced",
+    "duration": "5h 50m",
+    "price": 149.99,
+    "xpReward": 400,
+    "modules": [
+      {
+        "id": "c20_m1",
+        "title": "Module 1: Defining General Intelligence",
+        "lessons": [
+          {
+            "id": "c20_m1_l1",
+            "title": "The Imitation Game & Beyond",
+            "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+            "content": "<p>Explore Turing testing guidelines and modern benchmarks for general reasoning capabilities.</p>"
+          }
+        ]
+      }
+    ],
+    "quizzes": []
+  }
+]

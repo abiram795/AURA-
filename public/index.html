@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI-Powered Interactive Learning Platform for Students & Instructors">
+  <title>AuraAI - AI Learning Platform</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- Offline Banner -->
+  <div id="offline-banner" style="display: none; background: var(--danger); color: white; padding: var(--spacing-sm); text-align: center; font-size: 13px; font-weight: 700; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; box-shadow: var(--shadow-sm);">
+    <i class="fa-solid fa-wifi-slash"></i> <span data-i18n="offline-msg">You are currently offline. Running in cached offline mode.</span>
+  </div>
+
+  <div class="app-container" id="app-shell" style="display: none;">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <a href="#/dashboard" class="sidebar-logo">
+        <i class="fa-solid fa-brain"></i> AuraAI
+      </a>
+      
+      <nav class="sidebar-nav">
+        <a href="#/dashboard" class="nav-item active" id="nav-dashboard">
+          <i class="fa-solid fa-chart-line"></i> <span data-i18n="nav-dashboard">Dashboard</span>
+        </a>
+        <a href="#/courses" class="nav-item" id="nav-courses">
+          <i class="fa-solid fa-graduation-cap"></i> <span data-i18n="nav-courses">Courses</span>
+        </a>
+        <a href="#/leaderboard" class="nav-item" id="nav-leaderboard">
+          <i class="fa-solid fa-trophy"></i> <span data-i18n="nav-leaderboard">Leaderboard</span>
+        </a>
+        <a href="#/bookmarks" class="nav-item" id="nav-bookmarks">
+          <i class="fa-solid fa-bookmark"></i> <span data-i18n="nav-bookmarks">My Bookmarks</span>
+        </a>
+        <a href="#/profile" class="nav-item" id="nav-profile">
+          <i class="fa-solid fa-user-gear"></i> <span data-i18n="nav-profile">Profile</span>
+        </a>
+        <a href="#/instructor" class="nav-item" id="nav-instructor" style="display: none;">
+          <i class="fa-solid fa-chalkboard-user"></i> <span data-i18n="nav-instructor">Instructor Portal</span>
+        </a>
+        <a href="#/admin" class="nav-item" id="nav-admin" style="display: none;">
+          <i class="fa-solid fa-screwdriver-wrench"></i> <span data-i18n="nav-admin">Admin Dashboard</span>
+        </a>
+      </nav>
+      
+      <div class="sidebar-footer" id="sidebar-profile-link">
+        <img src="" alt="Avatar" class="sidebar-user-avatar" id="sidebar-avatar">
+        <div class="sidebar-user-info">
+          <span class="sidebar-user-name" id="sidebar-username">Guest</span>
+          <span class="sidebar-user-role" id="sidebar-role">Student</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- HEADER -->
+    <header class="header">
+      <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+        <button class="menu-toggle" id="menu-toggle-btn">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        
+        <div class="header-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="global-search-input" placeholder="Search courses or lessons...">
+          <div class="search-results-dropdown" id="search-results-box"></div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Streak Badge -->
+        <div class="streak-badge" id="header-streak-badge" title="Daily Learning Streak">
+          <i class="fa-solid fa-fire"></i>
+          <span id="header-streak-count">0</span>
+        </div>
+
+        <!-- Notification Bell -->
+        <div class="notification-bell-container">
+          <button class="notification-bell" id="notif-bell-btn">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notification-badge" id="notif-count" style="display: none;">0</span>
+          </button>
+          <div class="notification-dropdown" id="notif-dropdown">
+            <div class="notification-header">
+              <h3 data-i18n="notif-title">Notifications</h3>
+              <button class="mark-read-btn" id="mark-all-read-btn" data-i18n="notif-clear">Clear all</button>
+            </div>
+            <div class="notification-list" id="notif-list-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Language Switcher -->
+        <button class="setting-icon" id="language-toggle-btn" title="Toggle Language">
+          <i class="fa-solid fa-globe"></i>
+          <span style="font-size: 11px; margin-left: var(--spacing-xs); font-weight: 700;" id="lang-indicator">EN</span>
+        </button>
+
+        <!-- Dark Mode Toggle -->
+        <button class="setting-icon" id="theme-toggle-btn" title="Toggle Dark/Light Mode">
+          <i class="fa-solid fa-moon" id="theme-icon"></i>
+        </button>
+
+        <!-- User Role Switcher/Logout Dropdown -->
+        <div class="user-menu-btn" id="logout-btn" title="Switch User / Logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span style="font-size: 12px; font-weight: 600;" data-i18n="nav-logout">Exit</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main class="main-content" id="app-router-view">
+      <!-- Injected by client-side router -->
+    </main>
+  </div>
+
+  <!-- Global Fullscreen View for Login/Selector -->
+  <div id="login-view-container" style="width: 100vw; height: 100vh; overflow-y: auto;">
+    <!-- Injected by login router view -->
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/state.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/router.js"></script>
+  <!-- Views -->
+  <script src="js/views/login.js"></script>
+  <script src="js/views/onboarding.js"></script>
+  <script src="js/views/dashboard.js"></script>
+  <script src="js/views/courses.js"></script>
+  <script src="js/views/course-detail.js"></script>
+  <script src="js/views/quiz.js"></script>
+  <script src="js/views/leaderboard.js"></script>
+  <script src="js/views/profile.js"></script>
+  <script src="js/views/instructor.js"></script>
+  <script src="js/views/admin.js"></script>
+  <script src="js/views/bookmarks.js"></script>
+  <!-- App Shell -->
+  <script src="js/app.js"></script>
+</body>
+</html>

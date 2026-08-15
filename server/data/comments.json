@@ -1,0 +1,20 @@
+[
+  {
+    "id": "com1",
+    "lessonId": "c1_m1_l1",
+    "userId": "u2",
+    "userName": "Maria Lopez",
+    "userAvatar": "https://api.dicebear.com/7.x/bottts/svg?seed=Maria",
+    "commentText": "This makes sense! I've been experimenting with prompts, and adding explicit output layout instructions makes a huge difference.",
+    "createdAt": "2026-08-11T09:30:00.000Z"
+  },
+  {
+    "id": "com2",
+    "lessonId": "c1_m1_l1",
+    "userId": "u3",
+    "userName": "Dr. Sarah Chen",
+    "userAvatar": "https://api.dicebear.com/7.x/bottts/svg?seed=Sarah",
+    "commentText": "Glad to hear that, Maria! Clear constraints are indeed critical to reduce hallucinations.",
+    "createdAt": "2026-08-11T09:45:00.000Z"
+  }
+]

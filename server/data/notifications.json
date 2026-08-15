@@ -1,0 +1,58 @@
+[
+  {
+    "id": "n1",
+    "userId": "u1",
+    "title": "Welcome to AI Learning!",
+    "message": "Start your learning journey today by exploring the 'Intro to Prompt Engineering' course.",
+    "read": false,
+    "createdAt": "2026-08-10T10:00:00.000Z"
+  },
+  {
+    "id": "n2",
+    "userId": "u2",
+    "title": "Quiz Mastered!",
+    "message": "Congratulations! You scored 100% on the Foundations of Prompting Quiz.",
+    "read": false,
+    "createdAt": "2026-08-11T08:00:00.000Z"
+  },
+  {
+    "id": "n_1786442204124",
+    "userId": "u3",
+    "title": "Course Enrolled!",
+    "message": "You enrolled in Generative AI for Creators. Happy learning!",
+    "read": false,
+    "createdAt": "2026-08-11T09:56:44.124Z"
+  },
+  {
+    "id": "n_1786442211781",
+    "userId": "u3",
+    "title": "Quiz Finished!",
+    "message": "You scored 0% on the quiz.",
+    "read": false,
+    "createdAt": "2026-08-11T09:56:51.781Z"
+  },
+  {
+    "id": "n_1786442215148",
+    "userId": "u3",
+    "title": "Quiz Finished!",
+    "message": "You scored 100% on the quiz. Perfect score bonus (+20 XP)!",
+    "read": false,
+    "createdAt": "2026-08-11T09:56:55.148Z"
+  },
+  {
+    "id": "n_1786442463715",
+    "userId": "u1",
+    "title": "Course Enrolled!",
+    "message": "You enrolled in Deep Learning Foundations. Happy learning!",
+    "read": false,
+    "createdAt": "2026-08-11T10:01:03.715Z"
+  },
+  {
+    "id": "n_1786442470769",
+    "userId": "u1",
+    "title": "Quiz Finished!",
+    "message": "You scored 0% on the quiz.",
+    "read": false,
+    "createdAt": "2026-08-11T10:01:10.769Z"
+  }
+]

@@ -1,0 +1,51 @@
+[
+  {
+    "userId": "u1",
+    "courseId": "c1",
+    "completedLessons": [
+      "c1_m1_l1"
+    ],
+    "quizScores": {},
+    "bookmarks": [
+      {
+        "lessonId": "c1_m1_l1",
+        "notes": "System prompts define the core persona and behavior constraints of the LLM. Keep this in mind when building chatbots.",
+        "bookmarkedAt": "2026-08-11T10:00:00Z"
+      }
+    ],
+    "completedAt": null
+  },
+  {
+    "userId": "u2",
+    "courseId": "c1",
+    "completedLessons": [
+      "c1_m1_l1",
+      "c1_m1_l2"
+    ],
+    "quizScores": {
+      "c1_q1": 100
+    },
+    "bookmarks": [],
+    "completedAt": null
+  },
+  {
+    "userId": "u3",
+    "courseId": "c2",
+    "completedLessons": [],
+    "quizScores": {
+      "c2_q1": 100
+    },
+    "bookmarks": [],
+    "completedAt": null
+  },
+  {
+    "userId": "u1",
+    "courseId": "c3",
+    "completedLessons": [],
+    "quizScores": {
+      "c3_q1": 0
+    },
+    "bookmarks": [],
+    "completedAt": null
+  }
+]
