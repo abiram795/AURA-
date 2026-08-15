@@ -22,7 +22,7 @@ window.showCheckoutModal = (course, callback) => {
 
       <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; margin-top: var(--spacing-xs); padding: 0 var(--spacing-xs);">
         <span style="color: var(--text-secondary);">Course Price:</span>
-        <span style="color: var(--primary); font-size: 16px;">₹${course.price.toFixed(2)}</span>
+        <span style="color: var(--primary); font-size: 16px;">₹${(Number(course.price) || 0).toFixed(2)}</span>
       </div>
 
       <form id="checkout-payment-form" style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
@@ -52,7 +52,7 @@ window.showCheckoutModal = (course, callback) => {
         </div>
 
         <button type="submit" class="btn btn-primary" id="checkout-submit-btn" style="width: 100%; justify-content: center; margin-top: var(--spacing-sm); padding: 12px;">
-          Pay ₹${course.price.toFixed(2)}
+          Pay ₹${(Number(course.price) || 0).toFixed(2)}
         </button>
       </form>
     </div>
@@ -138,7 +138,7 @@ const CoursesView = {
           actionBtnText = 'Continue';
           badgeHtml = `<span class="badge badge-primary"><i class="fa-solid fa-circle-play"></i> Enrolled</span>`;
         } else if (!isPurchased) {
-          actionBtnText = `Buy ₹${c.price.toFixed(2)}`;
+          actionBtnText = `Buy ₹${(Number(c.price) || 0).toFixed(2)}`;
           badgeHtml = `<span class="badge badge-warning"><i class="fa-solid fa-lock"></i> Paid</span>`;
         } else if (c.price === 0) {
           actionBtnText = 'Enroll Free';

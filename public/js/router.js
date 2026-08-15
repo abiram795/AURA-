@@ -41,6 +41,11 @@ const Router = {
       return;
     }
 
+    if (AppState.currentUser && AppState.currentUser.role === 'instructor' && hash !== '#/instructor' && hash !== '#/profile' && hash !== '#/leaderboard') {
+      window.location.hash = '#/instructor';
+      return;
+    }
+
     // Always synchronize sidebar/shell UI with active user if logged in
     if (AppState.currentUser) {
       const user = AppState.currentUser;
@@ -71,15 +76,21 @@ const Router = {
         if (navProfile) navProfile.style.display = 'none';
         if (navInstructor) navInstructor.style.display = 'none';
         if (navAdmin) navAdmin.style.display = 'flex';
+      } else if (user.role === 'instructor') {
+        if (navDashboard) navDashboard.style.display = 'none'; // Hide student Dashboard for teachers
+        if (navCourses) navCourses.style.display = 'none'; // Hide Courses for teachers
+        if (navLeaderboard) navLeaderboard.style.display = 'flex';
+        if (navBookmarks) navBookmarks.style.display = 'none'; // Hide Bookmarks for teachers
+        if (navProfile) navProfile.style.display = 'flex';
+        if (navInstructor) navInstructor.style.display = 'flex';
+        if (navAdmin) navAdmin.style.display = 'none';
       } else {
         if (navDashboard) navDashboard.style.display = 'flex';
         if (navCourses) navCourses.style.display = 'flex';
         if (navLeaderboard) navLeaderboard.style.display = 'flex';
         if (navBookmarks) navBookmarks.style.display = 'flex';
         if (navProfile) navProfile.style.display = 'flex';
-        if (navInstructor) {
-          navInstructor.style.display = (user.role === 'instructor') ? 'flex' : 'none';
-        }
+        if (navInstructor) navInstructor.style.display = 'none';
         if (navAdmin) navAdmin.style.display = 'none';
       }
 

@@ -97,7 +97,7 @@ const AdminView = {
           ${course.instructorName}
         </td>
         <td style="padding: var(--spacing-md) var(--spacing-sm); color: var(--primary); font-weight: 700;">
-          ${course.price === 0 ? 'Free' : `₹${course.price.toFixed(2)}`}
+          ${Number(course.price) === 0 ? 'Free' : `₹${(Number(course.price) || 0).toFixed(2)}`}
         </td>
         <td style="padding: var(--spacing-md) var(--spacing-sm); text-align: right;">
           <button class="btn btn-secondary delete-course-btn" data-id="${course.id}" style="padding: 6px 12px; background-color: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: rgba(239, 68, 68, 0.2);">

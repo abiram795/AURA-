@@ -5,10 +5,12 @@ const InstructorView = {
       return;
     }
 
-    // Load dynamic analytics and courses list
-    const [analytics, courses] = await Promise.all([
+    // Load dynamic analytics, courses list, users and attendance logs
+    const [analytics, courses, users, attendanceLogs] = await Promise.all([
       API.getInstructorAnalytics(),
-      API.getCourses()
+      API.getCourses(),
+      API.getUsers(),
+      API.getAttendance()
     ]);
 
     // Active Tab state
@@ -20,6 +22,7 @@ const InstructorView = {
           <button class="tab-btn ${activeTab === 'instructor-analytics' ? 'active' : ''}" data-target="instructor-analytics"><i class="fa-solid fa-chart-pie"></i> Platform Analytics</button>
           <button class="tab-btn ${activeTab === 'course-builder' ? 'active' : ''}" data-target="course-builder"><i class="fa-solid fa-folder-plus"></i> Course Creator</button>
           <button class="tab-btn ${activeTab === 'quiz-builder' ? 'active' : ''}" data-target="quiz-builder"><i class="fa-solid fa-circle-question"></i> Quiz Builder</button>
+          <button class="tab-btn ${activeTab === 'student-attendance' ? 'active' : ''}" data-target="student-attendance"><i class="fa-solid fa-clipboard-user"></i> Student Attendance</button>
         </div>
 
         <div class="tab-content ${activeTab === 'instructor-analytics' ? 'active' : ''}" id="instructor-analytics">
@@ -193,6 +196,60 @@ const InstructorView = {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+
+        <!-- STUDENT ATTENDANCE TAB -->
+        <div class="tab-content ${activeTab === 'student-attendance' ? 'active' : ''}" id="student-attendance">
+          <div class="card">
+            <h2 class="card-title">Daily Student Attendance logs</h2>
+            <p class="card-subtitle">Real-time attendance logs showing today's class check-ins (9:00 AM Attendance Staking).</p>
+            
+            <div style="overflow-x: auto; margin-top: var(--spacing-md);">
+              <table class="leaderboard-table">
+                <thead>
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Email Address</th>
+                    <th>Check-in Schedule</th>
+                    <th>Attendance Status</th>
+                    <th>Time Verified</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${(() => {
+                    const students = users.filter(u => u.role === 'student');
+                    const presentIds = new Set(attendanceLogs.map(log => log.user_id || log.userId));
+                    if (students.length === 0) {
+                      return `<tr><td colspan="5" style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted);">No students registered yet.</td></tr>`;
+                    }
+                    return students.map(student => {
+                      const isPresent = presentIds.has(student.id);
+                      // Instructors standard morning stake check-in schedule is 9:00 AM
+                      const targetCheckInHour = 9; 
+                      return `
+                        <tr>
+                          <td style="font-weight: 700; color: var(--text-primary);">${escapeHTML(student.username)}</td>
+                          <td style="color: var(--text-secondary);">${escapeHTML(student.email)}</td>
+                          <td style="color: var(--text-muted); font-size: 13px;">
+                            <i class="fa-solid fa-clock"></i> 0${targetCheckInHour}:00 AM check-in class
+                          </td>
+                          <td>
+                            ${isPresent 
+                              ? `<span class="badge badge-success" style="background-color: var(--success); color: white;"><i class="fa-solid fa-circle-check"></i> Present</span>` 
+                              : `<span class="badge badge-secondary"><i class="fa-solid fa-xmark"></i> Absent</span>`
+                            }
+                          </td>
+                          <td style="font-weight: 600; color: ${isPresent ? 'var(--success)' : 'var(--text-muted)'}; font-size: 13px;">
+                            ${isPresent ? `0${targetCheckInHour}:00 AM (Staked)` : '—'}
+                          </td>
+                        </tr>
+                      `;
+                    }).join('');
+                  })()}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       `;

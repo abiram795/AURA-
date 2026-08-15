@@ -1,9 +1,9 @@
 // Configure your live hosted backend URL below (e.g. on Render, Heroku, or Railway)
 // If left empty, it will default to http://localhost:3000 during local development.
-const PRODUCTION_API_URL = ''; // <-- PASTE YOUR LIVE BACKEND URL HERE (e.g., 'https://auraai-backend.onrender.com')
+const PRODUCTION_API_URL = 'https://aura-xv1e.onrender.com'; // <-- PASTE YOUR LIVE BACKEND URL HERE (e.g., 'https://auraai-backend.onrender.com')
 
-const API_BASE = PRODUCTION_API_URL 
-  ? PRODUCTION_API_URL 
+const API_BASE = PRODUCTION_API_URL
+  ? PRODUCTION_API_URL
   : (window.location.port === '3000' ? '' : 'http://localhost:3000');
 
 const API = {
@@ -33,14 +33,14 @@ const API = {
           ...(options.headers || {})
         }
       });
-      
+
       if (!response.ok) {
         throw new Error(`API error on ${endpoint}: ${response.statusText}`);
       }
       return await response.json();
     } catch (err) {
       console.warn(`Fetch error for ${endpoint}, using offline fallbacks:`, err);
-      
+
       // If network is online but local server is unreachable
       if (navigator.onLine && banner) {
         banner.style.display = 'block';
@@ -57,7 +57,7 @@ const API = {
   // Fallback mocks for robust visual verification even in network-disconnected states
   getOfflineFallback(endpoint, options) {
     console.log(`Offline fallback triggered for endpoint: ${endpoint}`);
-    
+
     if (endpoint === '/api/auth/login') {
       const { email, password } = JSON.parse(options.body);
       if (email.toLowerCase().trim() === 'student@auraai.com' && password === 'student123') {
@@ -115,7 +115,7 @@ const API = {
         goals: id === 'u1' ? { daily: 50, weekly: 250, completedToday: 30 } : {}
       };
     }
-    
+
     if (endpoint === '/api/users') {
       return [
         { id: 'u1', username: 'Abiram Sureshbabu', role: 'student', email: 'student@auraai.com' },
@@ -221,7 +221,7 @@ const API = {
     if (search) params.push(`search=${encodeURIComponent(search)}`);
     if (category) params.push(`category=${encodeURIComponent(category)}`);
     if (params.length > 0) url += `?${params.join('&')}`;
-    
+
     return this.request(url);
   },
 

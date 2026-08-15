@@ -43,7 +43,7 @@ const CourseDetailView = {
 
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--spacing-xs);">
               <span style="font-size: 13px; color: var(--text-secondary);">Unlock full lifetime access to lessons, captions, notes, and quiz rewards.</span>
-              <span style="font-size: 24px; font-weight: 800; color: var(--primary); margin: var(--spacing-xs) 0;">₹${course.price.toFixed(2)}</span>
+              <span style="font-size: 24px; font-weight: 800; color: var(--primary); margin: var(--spacing-xs) 0;">₹${(Number(course.price) || 0).toFixed(2)}</span>
             </div>
 
             <button class="btn btn-primary btn-lg" id="unlock-course-btn" style="padding: 12px 32px; font-size: 15px; font-weight: 800;">

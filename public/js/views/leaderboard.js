@@ -7,6 +7,10 @@ const LeaderboardView = {
       return;
     }
 
+    if (AppState.currentUser.role === 'instructor') {
+      this.activeSubTab = 'students';
+    }
+
     const userId = AppState.currentUser.id;
 
     // Load users and progress
@@ -85,11 +89,12 @@ const LeaderboardView = {
           <div class="card-header">
             <div>
               <h2 class="card-title">AuraAI Global Standings</h2>
-              <p class="card-subtitle">Compete globally or view top-rated industry instructors.</p>
+              <p class="card-subtitle">${AppState.currentUser.role === 'instructor' ? 'View the top-performing students on the platform.' : 'Compete globally or view top-rated industry instructors.'}</p>
             </div>
           </div>
 
           <!-- Standings Type Selector Sub-Tabs -->
+          ${AppState.currentUser.role === 'instructor' ? '' : `
           <div class="tab-group" style="display: flex; gap: var(--spacing-sm); margin: var(--spacing-md) 0; border-bottom: 2px solid var(--border-color); padding-bottom: 0; background: none; justify-content: flex-start;">
             <button class="filter-btn ${this.activeSubTab === 'students' ? 'active' : ''}" id="lead-subtab-students" style="padding: 8px 16px;">
               Student Standings
@@ -98,6 +103,7 @@ const LeaderboardView = {
               Instructor Ratings
             </button>
           </div>
+          `}
 
           <div class="card-body" style="padding: 0; overflow-x: auto;" id="leaderboard-table-container">
             ${this.activeSubTab === 'students' 
