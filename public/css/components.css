@@ -482,6 +482,27 @@
   gap: var(--spacing-md);
   border-bottom: 1px solid var(--border-glass);
   margin-bottom: var(--spacing-lg);
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+
+.tab-container::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.tab-group {
+  display: flex;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+
+.tab-group::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
 .tab-btn {

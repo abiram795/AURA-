@@ -37,12 +37,20 @@ const API = {
       if (!response.ok) {
         throw new Error(`API error on ${endpoint}: ${response.statusText}`);
       }
+
+      // Hide banner since server is fully reachable and responding
+      if (banner && !isOffline) {
+        banner.style.display = 'none';
+      }
+
       return await response.json();
     } catch (err) {
       console.warn(`Fetch error for ${endpoint}, using offline fallbacks:`, err);
 
-      // If network is online but local server is unreachable
-      if (navigator.onLine && banner) {
+      // Only show unreachable banner if it is a true connection failure (e.g., TypeError: Failed to fetch)
+      // and NOT a normal server error response (such as 404 or 500)
+      const isConnectionError = err instanceof TypeError || err.message?.includes('fetch') || err.message?.includes('NetworkError');
+      if (navigator.onLine && banner && isConnectionError) {
         banner.style.display = 'block';
         banner.style.backgroundColor = 'var(--accent-streak)'; // Yellow-orange streak alert color
         const textSpan = banner.querySelector('span');

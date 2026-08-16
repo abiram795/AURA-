@@ -133,7 +133,7 @@ const AdminView = {
         <h2 style="font-size: 18px; font-weight: 800; margin-bottom: var(--spacing-md); color: var(--text-primary);">Create a New AI Course</h2>
         <form id="admin-create-course-form" style="display: flex; flex-direction: column; gap: var(--spacing-md);">
           
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+          <div class="form-grid-2col">
             <!-- Title -->
             <div class="form-group">
               <label for="new-course-title">Course Title</label>
@@ -153,7 +153,7 @@ const AdminView = {
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+          <div class="form-grid-2col">
             <!-- Instructor -->
             <div class="form-group">
               <label for="new-course-instructor">Instructor (Teacher)</label>
@@ -172,7 +172,7 @@ const AdminView = {
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+          <div class="form-grid-2col">
             <!-- Difficulty -->
             <div class="form-group">
               <label for="new-course-difficulty">Difficulty</label>

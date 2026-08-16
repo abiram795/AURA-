@@ -1,20 +1,20 @@
 :root {
   /* --- Primary Brand Colors --- */
   --color-primary-yellow: #F6D021; /* The dominant, energetic yellow used in the main hero section and accents. */
-  --color-primary-dark: #222222;   /* The deep charcoal/almost black used in the secondary hero layout. */
+  --color-primary-dark: var(--text-primary);   /* Dynamic text/dark primary color adapted for accessibility. */
 
   /* --- Background Colors --- */
-  --color-bg-white: #FFFFFF;       /* Clean white used for course cards, navigation, and page backgrounds. */
-  --color-bg-off-white: #F9F9F9;   /* Subtle light gray used in the presentation background matting. */
+  --color-bg-white: var(--bg-secondary);       /* Clean theme-aware card/surface background. */
+  --color-bg-off-white: var(--bg-primary);   /* Dynamic container background. */
 
   /* --- Typography --- */
-  --color-text-main: #1A1A1A;      /* Dark text for high legibility on white and yellow backgrounds. */
-  --color-text-inverse: #FFFFFF;   /* White text used inside the dark sections and dark buttons. */
-  --color-text-muted: #666666;     /* Lighter gray for secondary text, like course details and prices. */
+  --color-text-main: var(--text-primary);      /* Dynamic primary body/heading text color. */
+  --color-text-inverse: #FFFFFF;   /* White text used inside dark buttons and accents. */
+  --color-text-muted: var(--text-secondary);     /* Dynamic secondary/muted text color. */
 
   /* --- Accent Colors --- */
-  --color-accent-pink: #E81A6F;    /* The bright magenta/pink from the "ADOBE XD" vertical sidebar text. */
-  --color-accent-blue: #85B5DF;    /* The soft blue from the left model's shirt, acting as a cool complementary accent. */
+  --color-accent-pink: #E81A6F;    /* The bright magenta/pink accent. */
+  --color-accent-blue: #85B5DF;    /* Soft blue complementary accent. */
 
   /* --- Structural Variables (Required for Layout) --- */
   --spacing-xs: 4px;
@@ -459,7 +459,8 @@
 
 @media (max-width: 768px) {
   .course-detail-layout {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column-reverse;
     height: auto;
   }
 }

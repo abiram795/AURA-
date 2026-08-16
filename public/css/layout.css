@@ -524,6 +524,7 @@ body {
     height: 100vh;
     transform: translateX(-100%);
     box-shadow: var(--shadow-lg);
+    z-index: 1000; /* Ensure sidebar is topmost on mobile */
   }
 
   .sidebar.open {
@@ -535,10 +536,100 @@ body {
   }
 
   .header-search {
-    display: none; /* Hide header search on small mobiles, or resize */
+    display: none; /* Hide header search on small mobiles */
   }
 
   .header {
     padding: 0 var(--spacing-md);
+  }
+}
+
+/* Custom Responsive Grid Classes for Mobile-First Redesign */
+.profile-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--spacing-lg);
+}
+
+.form-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.form-grid-3col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .profile-layout-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-grid-3col {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+  .mobile-logo-text {
+    display: inline-flex !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-grid-2col {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+  h1 {
+    font-size: 22px !important;
+  }
+  h2 {
+    font-size: 18px !important;
+  }
+  h3 {
+    font-size: 15px !important;
+  }
+  .main-content {
+    padding: var(--spacing-md) !important;
+  }
+  .card {
+    padding: var(--spacing-md) !important;
+    gap: var(--spacing-sm) !important;
+  }
+  .header {
+    height: 60px !important;
+  }
+  .app-container {
+    grid-template-rows: 60px 1fr !important;
+  }
+  #lang-indicator {
+    display: none !important;
+  }
+  #logout-btn span {
+    display: none !important;
+  }
+  .header-actions {
+    gap: var(--spacing-xs) !important;
+  }
+  .user-menu-btn {
+    padding: 10px !important;
+    border-radius: var(--border-radius-full) !important;
+  }
+  .streak-badge {
+    padding: 6px 10px !important;
+  }
+  .modal-container {
+    width: 92% !important;
+    padding: var(--spacing-md) !important;
+  }
+  .notification-dropdown {
+    position: fixed !important;
+    top: 60px !important; /* Align with the new 60px mobile header height */
+    left: var(--spacing-sm) !important;
+    right: var(--spacing-sm) !important;
+    width: auto !important;
+    max-width: none !important;
+    z-index: 2000 !important;
   }
 }

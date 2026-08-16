@@ -36,7 +36,7 @@ window.showCheckoutModal = (course, callback) => {
           <input type="text" pattern="\\d{16}" placeholder="4111222233334444" required style="width: 100%;" title="Please enter 16-digit credit card number">
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+        <div class="form-grid-2col">
           <div class="form-group" style="text-align: left;">
             <label>Expiry Date (MM/YY)</label>
             <input type="text" pattern="(0[1-9]|1[0-2])\\/\\d{2}" placeholder="12/28" required style="width: 100%;" title="Please enter expiry in MM/YY format">

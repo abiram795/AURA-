@@ -30,7 +30,7 @@ const ProfileView = {
         </p>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--spacing-lg);">
+      <div class="profile-layout-grid">
         <!-- LEFT panel: Info summary card -->
         <div style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
           <div class="card" style="text-align: center; align-items: center;">

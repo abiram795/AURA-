@@ -111,7 +111,7 @@ const InstructorView = {
                 <textarea id="builder-course-desc" placeholder="Write a short summary of course learning outcomes..." required style="height: 60px;"></textarea>
               </div>
 
-              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--spacing-md);">
+              <div class="form-grid-3col">
                 <div class="form-group">
                   <label>Category</label>
                   <select id="builder-course-category">
@@ -160,7 +160,7 @@ const InstructorView = {
             <p class="card-subtitle">Draft multiple-choice questions, verify correct index states, and input explainers.</p>
             
             <form id="quiz-builder-form" style="display: flex; flex-direction: column; gap: var(--spacing-md); margin-top: var(--spacing-md);">
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+              <div class="form-grid-2col">
                 <div class="form-group">
                   <label>Select Target Course</label>
                   <select id="quiz-builder-course-select" required>
@@ -461,7 +461,7 @@ const InstructorView = {
             <input type="text" class="q-text-input" placeholder="e.g. What does CNN stand for?" required>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-sm); margin-top: var(--spacing-sm);">
+          <div class="form-grid-2col" style="margin-top: var(--spacing-sm);">
             <div class="form-group">
               <label style="font-size: 10px;">Option 1</label>
               <input type="text" class="q-opt-0" placeholder="Option 1" required>
@@ -480,7 +480,7 @@ const InstructorView = {
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--spacing-md); margin-top: var(--spacing-sm);">
+          <div class="profile-layout-grid" style="margin-top: var(--spacing-sm);">
             <div class="form-group">
               <label style="font-size: 11px;">Correct Option Index</label>
               <select class="q-correct-idx">
