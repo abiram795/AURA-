@@ -10,10 +10,22 @@
     "xp": 340,
     "level": 2,
     "streak": 5,
+    "longestStreak": 14,
+    "totalLearningHours": 24,
     "lastActiveDate": "2026-08-11",
     "interests": ["Prompt Engineering", "NLP"],
     "badges": ["b1", "b2"],
-    "goals": { "daily": 50, "weekly": 250, "completedToday": 30 }
+    "goals": { "daily": 50, "weekly": 250, "completedToday": 30 },
+    "monthlyActivity": {
+      "2026-01": { "xpEarned": 120, "lessonsCompleted": 8, "coursesCompleted": 0, "achievementsUnlocked": ["b1"], "dailyXp": { "1": 15, "5": 30, "12": 15, "15": 30, "20": 15, "25": 15 } },
+      "2026-02": { "xpEarned": 220, "lessonsCompleted": 12, "coursesCompleted": 1, "achievementsUnlocked": ["b5"], "dailyXp": { "3": 50, "8": 30, "15": 60, "22": 40, "28": 40 } },
+      "2026-03": { "xpEarned": 90, "lessonsCompleted": 6, "coursesCompleted": 0, "achievementsUnlocked": [], "dailyXp": { "10": 30, "14": 15, "19": 30, "27": 15 } },
+      "2026-04": { "xpEarned": 310, "lessonsCompleted": 16, "coursesCompleted": 1, "achievementsUnlocked": ["b3"], "dailyXp": { "2": 50, "5": 50, "9": 40, "14": 60, "20": 40, "25": 40, "30": 30 } },
+      "2026-05": { "xpEarned": 150, "lessonsCompleted": 10, "coursesCompleted": 0, "achievementsUnlocked": [], "dailyXp": { "4": 30, "11": 30, "18": 30, "25": 30, "28": 30 } },
+      "2026-06": { "xpEarned": 180, "lessonsCompleted": 11, "coursesCompleted": 0, "achievementsUnlocked": [], "dailyXp": { "2": 20, "8": 30, "15": 40, "20": 30, "25": 30, "29": 30 } },
+      "2026-07": { "xpEarned": 250, "lessonsCompleted": 14, "coursesCompleted": 1, "achievementsUnlocked": [], "dailyXp": { "3": 40, "10": 40, "17": 50, "24": 40, "31": 80 } },
+      "2026-08": { "xpEarned": 165, "lessonsCompleted": 9, "coursesCompleted": 0, "achievementsUnlocked": ["b2"], "dailyXp": { "1": 15, "4": 15, "6": 30, "8": 15, "10": 30, "12": 15, "15": 30, "16": 15 } }
+    }
   },
   {
     "id": "u2",
@@ -26,10 +38,22 @@
     "xp": 820,
     "level": 4,
     "streak": 12,
+    "longestStreak": 20,
+    "totalLearningHours": 48,
     "lastActiveDate": "2026-08-11",
     "interests": ["Generative Media", "UX Design"],
     "badges": ["b1", "b2", "b3", "b4"],
-    "goals": { "daily": 50, "weekly": 250, "completedToday": 60 }
+    "goals": { "daily": 50, "weekly": 250, "completedToday": 60 },
+    "monthlyActivity": {
+      "2026-01": { "xpEarned": 250, "lessonsCompleted": 15, "coursesCompleted": 1, "achievementsUnlocked": ["b1"], "dailyXp": { "3": 50, "8": 50, "15": 50, "22": 50, "29": 50 } },
+      "2026-02": { "xpEarned": 180, "lessonsCompleted": 10, "coursesCompleted": 0, "achievementsUnlocked": [], "dailyXp": { "5": 30, "12": 30, "19": 60, "26": 60 } },
+      "2026-03": { "xpEarned": 320, "lessonsCompleted": 18, "coursesCompleted": 1, "achievementsUnlocked": ["b4"], "dailyXp": { "2": 40, "8": 60, "14": 60, "20": 60, "26": 65, "30": 35 } },
+      "2026-04": { "xpEarned": 120, "lessonsCompleted": 8, "coursesCompleted": 0, "achievementsUnlocked": [], "dailyXp": { "10": 30, "15": 30, "22": 30, "28": 30 } },
+      "2026-05": { "xpEarned": 420, "lessonsCompleted": 22, "coursesCompleted": 2, "achievementsUnlocked": ["b3"], "dailyXp": { "1": 60, "6": 60, "12": 80, "18": 80, "24": 60, "30": 80 } },
+      "2026-06": { "xpEarned": 190, "lessonsCompleted": 11, "coursesCompleted": 0, "achievementsUnlocked": [], "dailyXp": { "4": 40, "11": 40, "18": 50, "25": 60 } },
+      "2026-07": { "xpEarned": 280, "lessonsCompleted": 15, "coursesCompleted": 1, "achievementsUnlocked": [], "dailyXp": { "3": 40, "9": 60, "15": 60, "21": 60, "27": 60 } },
+      "2026-08": { "xpEarned": 350, "lessonsCompleted": 18, "coursesCompleted": 0, "achievementsUnlocked": ["b2"], "dailyXp": { "2": 50, "5": 50, "8": 50, "11": 50, "14": 50, "16": 100 } }
+    }
   },
   {
     "id": "u3",

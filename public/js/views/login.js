@@ -46,14 +46,14 @@ const LoginView = {
           </div>
 
           <!-- Google Sign-In Button -->
-          <button class="btn btn-secondary" id="google-login-btn" style="width: 100%; justify-content: center; background-color: #fff; color: #1f2937; border-color: #e5e7eb;">
+          <button class="btn btn-secondary btn-google" id="google-login-btn" style="width: 100%; justify-content: center;">
             <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo" style="width: 16px; height: 16px; margin-right: var(--spacing-sm);">
             Sign in with Google
           </button>
         </div>
 
         <!-- Help cheat sheet for the reviewer -->
-        <details style="font-size: 11px; color: var(--text-secondary); width: 100%; max-width: 420px; background-color: rgba(99, 102, 241, 0.05); border: 1px dashed rgba(99, 102, 241, 0.2); padding: var(--spacing-md); border-radius: var(--border-radius-md); text-align: left; margin-top: var(--spacing-sm); cursor: pointer;">
+        <details style="font-size: 11px; color: var(--text-secondary); width: 100%; max-width: 420px; background-color: var(--primary-glow); border: 1px dashed var(--border-color); padding: var(--spacing-md); border-radius: var(--border-radius-md); text-align: left; margin-top: var(--spacing-sm); cursor: pointer;">
           <summary style="font-weight: 700; color: var(--primary); outline: none;"><i class="fa-solid fa-key"></i> View Mock User Accounts List (8 Accounts)</summary>
           <div style="display: flex; flex-direction: column; gap: var(--spacing-xs); margin-top: var(--spacing-sm); cursor: default;">
             <div style="font-weight: 700; color: var(--text-primary);">Students (2):</div>
@@ -127,10 +127,12 @@ const LoginView = {
           console.error('Streak update failed:', se);
         }
 
-        // Navigate
+        // Navigate based on role and interests
         if (user.role === 'student' && (!user.interests || user.interests.length === 0)) {
+          sessionStorage.setItem('aura_needs_onboarding', 'true');
           window.location.hash = '#/onboarding';
         } else {
+          sessionStorage.removeItem('aura_needs_onboarding');
           window.location.hash = '#/dashboard';
         }
       } catch (err) {
@@ -161,8 +163,10 @@ const LoginView = {
           googleOverlay.classList.remove('active');
 
           if (user.role === 'student' && (!user.interests || user.interests.length === 0)) {
+            sessionStorage.setItem('aura_needs_onboarding', 'true');
             window.location.hash = '#/onboarding';
           } else {
+            sessionStorage.removeItem('aura_needs_onboarding');
             window.location.hash = '#/dashboard';
           }
         } catch (err) {

@@ -1,7 +1,7 @@
 const AppState = {
   currentUser: null,
   currentLanguage: localStorage.getItem('aura_lang') || 'en',
-  currentTheme: localStorage.getItem('aura_theme') || 'dark',
+  currentTheme: 'dark',
   activeRoute: '',
 
   // Translation catalogs
@@ -96,19 +96,8 @@ const AppState = {
   },
 
   applyTheme() {
-    if (this.currentTheme === 'light') {
-      document.body.classList.add('light-mode');
-      const themeIcon = document.getElementById('theme-icon');
-      if (themeIcon) {
-        themeIcon.className = 'fa-solid fa-sun';
-      }
-    } else {
-      document.body.classList.remove('light-mode');
-      const themeIcon = document.getElementById('theme-icon');
-      if (themeIcon) {
-        themeIcon.className = 'fa-solid fa-moon';
-      }
-    }
+    // Keep dark mode active permanently by removing any light mode class
+    document.body.classList.remove('light-mode');
   },
 
   setUser(user) {

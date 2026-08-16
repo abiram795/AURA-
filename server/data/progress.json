@@ -13,7 +13,13 @@
         "bookmarkedAt": "2026-08-11T10:00:00Z"
       }
     ],
-    "completedAt": null
+    "completedAt": null,
+    "purchased": true,
+    "lastActiveLesson": {
+      "moduleId": 0,
+      "lessonId": "c1_m1_l1",
+      "timestamp": 0
+    }
   },
   {
     "userId": "u2",
@@ -26,7 +32,13 @@
       "c1_q1": 100
     },
     "bookmarks": [],
-    "completedAt": null
+    "completedAt": null,
+    "purchased": true,
+    "lastActiveLesson": {
+      "moduleId": 0,
+      "lessonId": "c1_m1_l2",
+      "timestamp": 0
+    }
   },
   {
     "userId": "u3",
@@ -36,7 +48,9 @@
       "c2_q1": 100
     },
     "bookmarks": [],
-    "completedAt": null
+    "completedAt": null,
+    "purchased": true,
+    "lastActiveLesson": null
   },
   {
     "userId": "u1",
@@ -46,6 +60,8 @@
       "c3_q1": 0
     },
     "bookmarks": [],
-    "completedAt": null
+    "completedAt": null,
+    "purchased": true,
+    "lastActiveLesson": null
   }
 ]

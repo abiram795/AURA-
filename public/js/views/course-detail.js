@@ -93,10 +93,32 @@ const CourseDetailView = {
       bookmarks: []
     };
 
-    // Selected lesson (defaults to first lesson of first module)
-    let selectedLesson = course.modules && course.modules[0]?.lessons[0] || null;
+    // Selected lesson (defaults to first lesson of first module, or resumes where user left off)
+    let selectedLesson = null;
     let selectedModuleIndex = 0;
     let selectedLessonIndex = 0;
+    let initialSeekTimestamp = 0;
+
+    if (userProgressRecord && userProgressRecord.lastActiveLesson) {
+      const active = userProgressRecord.lastActiveLesson;
+      const modIdx = active.moduleId;
+      const lessonId = active.lessonId;
+      
+      const foundMod = course.modules && course.modules[modIdx];
+      if (foundMod) {
+        const lesIdx = foundMod.lessons.findIndex(l => l.id === lessonId);
+        if (lesIdx !== -1) {
+          selectedLesson = foundMod.lessons[lesIdx];
+          selectedModuleIndex = modIdx;
+          selectedLessonIndex = lesIdx;
+          initialSeekTimestamp = Number(active.timestamp || 0);
+        }
+      }
+    }
+
+    if (!selectedLesson) {
+      selectedLesson = course.modules && course.modules[0]?.lessons[0] || null;
+    }
 
     // Redraw lesson content in main pane
     const renderLessonPane = async (lesson) => {
@@ -135,7 +157,7 @@ const CourseDetailView = {
           <video id="html5-video" src="${lesson.videoUrl || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'}"></video>
           
           <!-- Mock Captions Overlay -->
-          <div id="video-captions-overlay" style="display: none; position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: white; padding: 6px 12px; border-radius: var(--border-radius-sm); font-size: 13px; text-align: center; pointer-events: none; z-index: 5; font-weight: 500; border: 1px solid var(--border-glass);">
+          <div id="video-captions-overlay" style="display: none; position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: var(--text-inverse); padding: 6px 12px; border-radius: var(--border-radius-sm); font-size: 13px; text-align: center; pointer-events: none; z-index: 5; font-weight: 500; border: 1px solid var(--border-glass);">
             Welcome to AuraAI training lecture.
           </div>
 
@@ -166,7 +188,7 @@ const CourseDetailView = {
 
         <!-- Lesson Downloads -->
         ${lesson.downloads && lesson.downloads.length > 0 ? `
-          <div class="card" style="padding: var(--spacing-md); background: rgba(6, 182, 212, 0.05);">
+          <div class="card" style="padding: var(--spacing-md); background: var(--accent-glow);">
             <h4 style="font-size: 13px; font-weight: 700; color: var(--secondary);"><i class="fa-solid fa-circle-down"></i> Resources & Downloads</h4>
             <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-sm);">
               ${lesson.downloads.map(dl => `
@@ -343,7 +365,7 @@ const CourseDetailView = {
         if (quiz) {
           const completedQuizScore = progress.quizScores?.[quiz.id];
           navBlock.innerHTML = `
-            <div class="card" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(99, 102, 241, 0.05)); border: 1px solid rgba(249, 115, 22, 0.2); padding: var(--spacing-md); text-align: center;">
+            <div class="card" style="background: linear-gradient(135deg, var(--accent-streak-glow), var(--primary-glow)); border: 1px solid var(--accent-streak-glow); padding: var(--spacing-md); text-align: center;">
               <h4 style="font-size: 14px; font-weight: 700; color: var(--accent-streak);"><i class="fa-solid fa-award"></i> Lesson Mastery Quiz Available</h4>
               <p style="font-size: 12px; margin-top: 2px;">
                 ${completedQuizScore !== undefined 
@@ -351,7 +373,7 @@ const CourseDetailView = {
                   : 'Test your understanding of zero-shot vs few-shot learning to unlock Level XP!'
                 }
               </p>
-              <a href="#/quiz/${quiz.id}" class="btn btn-primary btn-sm" style="margin-top: var(--spacing-md); background-color: var(--accent-streak); border: none; box-shadow: 0 4px 10px var(--accent-streak-glow);">
+              <a href="#/quiz/${quiz.id}" class="btn btn-primary btn-sm" style="margin-top: var(--spacing-md); background-color: var(--accent-streak); color: var(--text-on-accent); border: none; box-shadow: 0 4px 10px var(--accent-streak-glow);">
                 <i class="fa-solid fa-circle-question"></i> ${completedQuizScore !== undefined ? 'Retry Quiz' : 'Take Quiz now'}
               </a>
             </div>
@@ -424,6 +446,22 @@ const CourseDetailView = {
 
       if (!video) return;
 
+      // Restore playhead position on load
+      if (initialSeekTimestamp > 0 && selectedLesson && userProgressRecord?.lastActiveLesson?.lessonId === selectedLesson.id) {
+        video.addEventListener('loadedmetadata', () => {
+          video.currentTime = Math.min(initialSeekTimestamp, video.duration || 9999);
+        }, { once: true });
+      }
+
+      let lastSyncedTime = 0;
+      const syncPlayhead = async () => {
+        const cur = Math.floor(video.currentTime);
+        if (cur !== lastSyncedTime && cur > 0) {
+          lastSyncedTime = cur;
+          await API.saveTimestamp(userId, course.id, selectedModuleIndex, selectedLesson.id, cur);
+        }
+      };
+
       // Play/Pause
       const togglePlay = () => {
         if (video.paused) {
@@ -463,7 +501,14 @@ const CourseDetailView = {
 
         // Captions logic
         updateCaptions();
+
+        // Sync to server every 5 seconds of playback
+        if (Math.floor(video.currentTime) > 0 && Math.floor(video.currentTime) % 5 === 0) {
+          syncPlayhead();
+        }
       });
+
+      video.addEventListener('pause', syncPlayhead);
 
       // Seek progress
       progressTrack.addEventListener('click', (e) => {
@@ -557,7 +602,7 @@ const CourseDetailView = {
 
     // Click handler for sidebar lesson selection
     container.querySelectorAll('.syllabus-lesson-item').forEach(item => {
-      item.addEventListener('click', () => {
+      item.addEventListener('click', async () => {
         container.querySelectorAll('.syllabus-lesson-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
 
@@ -567,7 +612,11 @@ const CourseDetailView = {
         selectedModuleIndex = mIdx;
         selectedLessonIndex = lIdx;
         
-        renderLessonPane(course.modules[mIdx].lessons[lIdx]);
+        const les = course.modules[mIdx].lessons[lIdx];
+        renderLessonPane(les);
+
+        // Sync active lesson position immediately to backend
+        await API.saveTimestamp(userId, course.id, mIdx, les.id, 0);
       });
     });
 

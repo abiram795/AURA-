@@ -36,7 +36,7 @@ const ProfileView = {
           <div class="card" style="text-align: center; align-items: center;">
             <img src="${user.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${user.username}`}" alt="${escapeHTML(user.username)}" style="width: 100px; height: 100px; border-radius: var(--border-radius-full); border: 4px solid var(--primary); background-color: var(--bg-tertiary);" id="profile-avatar-preview">
             <h2 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-top: var(--spacing-sm);">${escapeHTML(user.username)}</h2>
-            <span class="badge badge-warning" style="background-color: var(--warning); color: black;"><i class="fa-solid fa-chalkboard-user"></i> ${user.role.toUpperCase()}</span>
+            <span class="badge badge-warning"><i class="fa-solid fa-chalkboard-user"></i> ${user.role.toUpperCase()}</span>
             
             <div style="width: 100%; border-top: 1px solid var(--border-color); margin-top: var(--spacing-md); padding-top: var(--spacing-md); display: flex; flex-direction: column; gap: var(--spacing-sm); font-size: 13px; text-align: left;">
               ${isInstructor ? `

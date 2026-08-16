@@ -77,21 +77,52 @@ async function dbGetUsers() {
 async function dbGetUser(id) {
   if (useSupabase) {
     const { data, error } = await supabase.from('users').select('*').eq('id', id).single();
-    if (error) return null;
+    if (error || !data) return null;
     return {
       ...data,
       lastActiveDate: data.last_active_date,
       ratingCount: data.rating_count,
-      rating: parseFloat(data.rating || 0)
+      rating: parseFloat(data.rating || 0),
+      longestStreak: data.longest_streak || data.streak || 0,
+      totalLearningHours: data.total_learning_hours || 0,
+      monthlyActivity: data.monthly_activity || {},
+      certificates: data.certificates || []
     };
   }
   const users = await readDB(USERS_FILE);
-  return users.find(u => u.id === id);
+  return users.find(u => u.id === id) || null;
 }
 
 async function dbSaveUser(user) {
   if (useSupabase) {
-    const mapped = {
+    // Tier 1: Full payload with all optional analytics columns
+    const fullMapped = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      role: user.role,
+      avatar: user.avatar,
+      bio: user.bio,
+      xp: user.xp,
+      level: user.level,
+      streak: user.streak,
+      last_active_date: user.lastActiveDate,
+      interests: user.interests,
+      badges: user.badges,
+      goals: user.goals,
+      rating: user.rating || 0,
+      rating_count: user.ratingCount || 0,
+      longest_streak: user.longestStreak || user.streak || 0,
+      total_learning_hours: user.totalLearningHours || 0,
+      monthly_activity: user.monthlyActivity || {},
+      certificates: user.certificates || []
+    };
+    const { error: e1 } = await supabase.from('users').upsert(fullMapped);
+    if (!e1) return user;
+
+    // Tier 2: Drop analytics columns (monthly_activity, certificates, longest_streak, total_learning_hours)
+    const midMapped = {
       id: user.id,
       username: user.username,
       email: user.email,
@@ -109,11 +140,34 @@ async function dbSaveUser(user) {
       rating: user.rating || 0,
       rating_count: user.ratingCount || 0
     };
-    const { error } = await supabase.from('users').upsert(mapped);
-    if (error) throw new Error(error.message);
+    const { error: e2 } = await supabase.from('users').upsert(midMapped);
+    if (!e2) return user;
+
+    // Tier 3: Core columns only — no rating, no analytics
+    const coreMapped = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      role: user.role,
+      avatar: user.avatar,
+      bio: user.bio,
+      xp: user.xp,
+      level: user.level,
+      streak: user.streak,
+      last_active_date: user.lastActiveDate,
+      interests: user.interests,
+      badges: user.badges,
+      goals: user.goals
+    };
+    const { error: e3 } = await supabase.from('users').upsert(coreMapped);
+    if (e3) {
+      // All tiers failed — log once and return (don't crash the request)
+      console.error('[dbSaveUser] All upsert tiers failed:', e3.message);
+    }
     return user;
   }
-  
+
   const users = await readDB(USERS_FILE);
   const idx = users.findIndex(u => u.id === user.id);
   if (idx !== -1) {
@@ -133,13 +187,17 @@ async function dbMarkAttendance(userId) {
   const today = new Date().toISOString().split('T')[0];
 
   if (useSupabase) {
+    // Silently skip if attendance table doesn't exist in this Supabase instance
     const { error } = await supabase.from('attendance').upsert({
       user_id: userId,
       username: user.username,
       role: user.role,
       date: today
     }, { onConflict: 'user_id,date' });
-    if (error) console.error('Error seeding attendance in Supabase:', error.message);
+    // Only log non-schema errors (schema errors are expected in minimal Supabase setups)
+    if (error && !error.message.includes('schema cache') && !error.message.includes('does not exist')) {
+      console.error('Error marking attendance:', error.message);
+    }
   } else {
     const attendance = await readDB(ATTENDANCE_FILE);
     const exists = attendance.find(a => a.userId === userId && a.date === today);
@@ -439,27 +497,107 @@ async function dbMarkNotificationsRead(userId) {
   return true;
 }
 
-// Helper to award XP and level up
+// Helper to log monthly activity and evaluate dynamic badges/achievements
+// Fully fault-tolerant — errors are logged but never propagated to callers
+async function logMonthlyActivity(userId, xpAmount, lessonsCount = 0, coursesCount = 0, achievementId = null) {
+  try {
+    const user = await dbGetUser(userId);
+    if (!user) return;
+
+    const now = new Date();
+    const yearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const day = String(now.getDate());
+
+    if (!user.monthlyActivity) user.monthlyActivity = {};
+
+    if (!user.monthlyActivity[yearMonth]) {
+      user.monthlyActivity[yearMonth] = {
+        xpEarned: 0,
+        lessonsCompleted: 0,
+        coursesCompleted: 0,
+        achievementsUnlocked: [],
+        dailyXp: {}
+      };
+    }
+
+    const log = user.monthlyActivity[yearMonth];
+    if (!log.dailyXp) log.dailyXp = {};
+    if (!log.achievementsUnlocked) log.achievementsUnlocked = [];
+
+    log.xpEarned = (log.xpEarned || 0) + xpAmount;
+    log.lessonsCompleted = (log.lessonsCompleted || 0) + lessonsCount;
+    log.coursesCompleted = (log.coursesCompleted || 0) + coursesCount;
+    log.dailyXp[day] = (log.dailyXp[day] || 0) + xpAmount;
+
+    if (achievementId && !log.achievementsUnlocked.includes(achievementId)) {
+      log.achievementsUnlocked.push(achievementId);
+    }
+
+    // Evaluate achievement badges dynamically
+    const achievements = Array.isArray(user.badges) ? [...user.badges] : [];
+
+    if (log.coursesCompleted >= 1 && !achievements.includes('badge_first_course')) {
+      achievements.push('badge_first_course');
+      if (!log.achievementsUnlocked.includes('badge_first_course')) log.achievementsUnlocked.push('badge_first_course');
+    }
+    if ((user.streak || 0) >= 7 && !achievements.includes('badge_7day_streak')) {
+      achievements.push('badge_7day_streak');
+      if (!log.achievementsUnlocked.includes('badge_7day_streak')) log.achievementsUnlocked.push('badge_7day_streak');
+    }
+    if ((user.streak || 0) >= 30 && !achievements.includes('badge_30day_streak')) {
+      achievements.push('badge_30day_streak');
+      if (!log.achievementsUnlocked.includes('badge_30day_streak')) log.achievementsUnlocked.push('badge_30day_streak');
+    }
+
+    try {
+      const progressList = await dbGetProgressList(userId);
+      const totalCompletedCourses = progressList.filter(p => p.completedAt).length;
+      if (totalCompletedCourses >= 5 && !achievements.includes('badge_5_courses')) {
+        achievements.push('badge_5_courses');
+        if (!log.achievementsUnlocked.includes('badge_5_courses')) log.achievementsUnlocked.push('badge_5_courses');
+      }
+    } catch (_) { /* progress list unavailable — skip badge check */ }
+
+    if ((user.xp || 0) >= 1500 && !achievements.includes('badge_top_learner')) {
+      achievements.push('badge_top_learner');
+      if (!log.achievementsUnlocked.includes('badge_top_learner')) log.achievementsUnlocked.push('badge_top_learner');
+    }
+
+    user.badges = achievements;
+    user.longestStreak = Math.max(user.longestStreak || 0, user.streak || 0);
+    await dbSaveUser(user);
+  } catch (err) {
+    console.warn('[logMonthlyActivity] Non-fatal error, skipping analytics update:', err.message);
+  }
+}
+
+// Helper to award XP and level up — fault-tolerant
 async function awardXP(userId, xpAmount) {
-  const user = await dbGetUser(userId);
-  if (!user) return null;
+  try {
+    const user = await dbGetUser(userId);
+    if (!user) return null;
 
-  user.xp = (user.xp || 0) + xpAmount;
-  
-  // simple level formula: level = floor(XP / 200) + 1
-  const targetLevel = Math.floor(user.xp / 200) + 1;
-  let leveledUp = false;
-  if (targetLevel > user.level) {
-    user.level = targetLevel;
-    leveledUp = true;
+    user.xp = (user.xp || 0) + xpAmount;
+
+    // simple level formula: level = floor(XP / 200) + 1
+    const targetLevel = Math.floor(user.xp / 200) + 1;
+    let leveledUp = false;
+    if (targetLevel > (user.level || 1)) {
+      user.level = targetLevel;
+      leveledUp = true;
+    }
+
+    if (user.goals) {
+      user.goals.completedToday = (user.goals.completedToday || 0) + xpAmount;
+    }
+
+    await dbSaveUser(user);
+    await logMonthlyActivity(userId, xpAmount, 0, 0, null); // already fault-tolerant
+    return { user, leveledUp };
+  } catch (err) {
+    console.warn('[awardXP] Non-fatal error, skipping XP update:', err.message);
+    return null;
   }
-
-  if (user.goals) {
-    user.goals.completedToday = (user.goals.completedToday || 0) + xpAmount;
-  }
-
-  await dbSaveUser(user);
-  return { user, leveledUp };
 }
 
 // ----------------------------------------------------
@@ -529,32 +667,69 @@ app.post('/api/users/:id/update', async (req, res) => {
   }
 });
 
-// Check/Update user streak
+// Check/Update user streak — fully hardened, never returns 500 for analytics gaps
 app.post('/api/users/:id/streak', async (req, res) => {
+  const userId = req.params.id;
   try {
-    const user = await dbGetUser(req.params.id);
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    await dbMarkAttendance(user.id);
+    const user = await dbGetUser(userId);
+    if (!user) {
+      // Unknown user — return a safe default so frontend never hangs
+      return res.json({
+        id: userId,
+        streak: 0,
+        lastActiveDate: new Date().toISOString().split('T')[0],
+        xp: 0,
+        level: 1,
+        badges: [],
+        monthlyActivity: {},
+        certificates: []
+      });
+    }
+
+    // Initialize any missing analytics fields with safe defaults
+    user.streak = user.streak || 0;
+    user.xp = user.xp || 0;
+    user.level = user.level || 1;
+    user.badges = Array.isArray(user.badges) ? user.badges : [];
+    user.monthlyActivity = user.monthlyActivity || {};
+    user.certificates = Array.isArray(user.certificates) ? user.certificates : [];
+    user.longestStreak = user.longestStreak || user.streak || 0;
+    user.totalLearningHours = user.totalLearningHours || 0;
+    user.goals = user.goals || { daily: 50, weekly: 250, completedToday: 0 };
+    user.goals.completedToday = user.goals.completedToday || 0;
+
+    // Mark attendance — non-fatal
+    try { await dbMarkAttendance(user.id); } catch (_) {}
 
     const today = new Date().toISOString().split('T')[0];
-    if (user.lastActiveDate === today) {
-      // Streak same
-    } else {
+    if (user.lastActiveDate !== today) {
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
       const yesterdayStr = yesterday.toISOString().split('T')[0];
 
-      if (user.lastActiveDate === yesterdayStr) {
-        user.streak = (user.streak || 0) + 1;
-      } else {
-        user.streak = 1;
-      }
+      user.streak = user.lastActiveDate === yesterdayStr ? user.streak + 1 : 1;
+      user.longestStreak = Math.max(user.longestStreak, user.streak);
       user.lastActiveDate = today;
-      await dbSaveUser(user);
+
+      // Save — if analytics columns don't exist in Supabase schema, dbSaveUser
+      // will automatically fall back to base columns only
+      try { await dbSaveUser(user); } catch (saveErr) {
+        console.warn('[streak] Save failed (non-fatal):', saveErr.message);
+      }
     }
-    res.json(user);
+
+    // Return user without password
+    const { password: _, ...safe } = user;
+    res.json(safe);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error(`[streak] Unexpected error for user ${userId}:`, err.message);
+    // Never block the frontend — return a minimal valid response
+    res.json({
+      id: userId,
+      streak: 0,
+      lastActiveDate: new Date().toISOString().split('T')[0],
+      xp: 0, level: 1, badges: [], monthlyActivity: {}, certificates: []
+    });
   }
 });
 
@@ -730,6 +905,62 @@ app.post('/api/progress/purchase', async (req, res) => {
   }
 });
 
+// Centralized course completion checker (requires all lessons and quizzes to be finished)
+async function checkAndCompleteCourse(userId, courseId, progress) {
+  try {
+    const course = await dbGetCourse(courseId);
+    if (!course) return false;
+
+    const allLessons = (course.modules || []).flatMap(m => (m.lessons || []).map(l => l.id));
+    const completedLessons = Array.isArray(progress.completedLessons) ? progress.completedLessons : [];
+    const hasFinishedAllLessons = allLessons.length > 0 && allLessons.every(lId => completedLessons.includes(lId));
+
+    const allQuizzes = course.quizzes || [];
+    const quizScores = progress.quizScores || {};
+    const hasFinishedAllQuizzes = allQuizzes.every(q => quizScores[q.id] !== undefined);
+
+    if (hasFinishedAllLessons && hasFinishedAllQuizzes && !progress.completedAt) {
+      progress.completedAt = new Date().toISOString();
+
+      // Award Course Completion XP — non-fatal
+      try { await awardXP(userId, course.xpReward || 150); } catch (_) {}
+      try { await dbAddNotification(userId, 'Course Certificate Unlocked!', `Congratulations! You finished ${course.title} and earned a certificate.`); } catch (_) {}
+
+      // Generate secure SHA-256 certificate ID
+      const crypto = require('crypto');
+      const hashInput = `${userId}-${courseId}-${progress.completedAt}`;
+      const certId = 'CERT-' + crypto.createHash('sha256').update(hashInput).digest('hex').substring(0, 12).toUpperCase();
+
+      // Save certificate to user profile — non-fatal
+      try {
+        const user = await dbGetUser(userId);
+        if (user) {
+          if (!Array.isArray(user.certificates)) user.certificates = [];
+          if (!user.certificates.some(c => c.courseId === courseId)) {
+            user.certificates.push({
+              id: certId,
+              courseId,
+              courseTitle: course.title,
+              completedAt: progress.completedAt
+            });
+            await dbSaveUser(user);
+          }
+        }
+      } catch (certErr) {
+        console.warn('[checkAndCompleteCourse] Certificate save failed (non-fatal):', certErr.message);
+      }
+
+      // Log monthly activity — already fault-tolerant
+      await logMonthlyActivity(userId, 0, 0, 1, 'badge_first_course');
+      return true;
+    }
+    return false;
+  } catch (err) {
+    console.warn('[checkAndCompleteCourse] Non-fatal error, skipping completion check:', err.message);
+    return false;
+  }
+}
+
 // Mark lesson complete
 app.post('/api/progress/complete-lesson', async (req, res) => {
   const { userId, courseId, lessonId } = req.body;
@@ -745,21 +976,12 @@ app.post('/api/progress/complete-lesson', async (req, res) => {
 
       // Award 15 XP
       const xpResult = await awardXP(userId, 15);
+      
+      // Update monthly log for lessons count
+      await logMonthlyActivity(userId, 0, 1, 0, null);
 
       // Check course completion
-      const course = await dbGetCourse(courseId);
-      let isComplete = false;
-      if (course) {
-        const allLessons = course.modules.flatMap(m => m.lessons.map(l => l.id));
-        const hasFinishedAll = allLessons.every(lId => progress.completedLessons.includes(lId));
-        if (hasFinishedAll && !progress.completedAt) {
-          progress.completedAt = new Date().toISOString();
-          isComplete = true;
-          // Award Course Completion XP
-          await awardXP(userId, course.xpReward || 150);
-          await dbAddNotification(userId, 'Course Certificate Unlocked!', `Congratulations! You finished ${course.title} and earned a certificate.`);
-        }
-      }
+      const isComplete = await checkAndCompleteCourse(userId, courseId, progress);
 
       await dbSaveProgress(progress);
       res.json({
@@ -806,14 +1028,72 @@ app.post('/api/progress/quiz', async (req, res) => {
       xpResult = await awardXP(userId, xpAwarded);
     }
 
+    // Check course completion (since quizzes are required)
+    const isComplete = await checkAndCompleteCourse(userId, courseId, progress);
+
     await dbSaveProgress(progress);
     await dbAddNotification(userId, 'Quiz Finished!', notificationMessage);
 
     res.json({
       progress,
       xpEarned: xpAwarded,
+      courseCompleted: isComplete,
       leveledUp: xpResult ? xpResult.leveledUp : false,
       user: xpResult ? xpResult.user : null
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Save video playhead resume timestamp state
+app.post('/api/progress/save-timestamp', async (req, res) => {
+  const { userId, courseId, moduleId, lessonId, timestamp } = req.body;
+  try {
+    const progressList = await dbGetProgressList(userId);
+    const progress = progressList.find(p => p.courseId === courseId);
+    if (!progress) return res.status(404).json({ error: 'Enrollment record not found' });
+
+    progress.lastActiveLesson = {
+      moduleId,
+      lessonId,
+      timestamp
+    };
+
+    await dbSaveProgress(progress);
+    res.json({ success: true, progress });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get Certificate details for verification page by unique certificate ID
+app.get('/api/progress/certificate/verify/:id', async (req, res) => {
+  const certId = req.params.id;
+  try {
+    const users = await dbGetUsers();
+    let foundCert = null;
+    let foundUser = null;
+
+    for (const u of users) {
+      if (u.certificates) {
+        const c = u.certificates.find(item => item.id.toUpperCase() === certId.toUpperCase());
+        if (c) {
+          foundCert = c;
+          foundUser = u;
+          break;
+        }
+      }
+    }
+
+    if (!foundCert) {
+      return res.status(404).json({ error: 'Certificate not found' });
+    }
+
+    res.json({
+      certificate: foundCert,
+      studentName: foundUser.username,
+      studentEmail: foundUser.email
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

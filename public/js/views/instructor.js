@@ -236,7 +236,7 @@ const InstructorView = {
                           </td>
                           <td>
                             ${isPresent 
-                              ? `<span class="badge badge-success" style="background-color: var(--success); color: white;"><i class="fa-solid fa-circle-check"></i> Present</span>` 
+                              ? `<span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Present</span>` 
                               : `<span class="badge badge-secondary"><i class="fa-solid fa-xmark"></i> Absent</span>`
                             }
                           </td>

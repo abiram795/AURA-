@@ -57,7 +57,7 @@ body {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   -webkit-background-clip: border-box;
   -webkit-text-fill-color: initial;
-  color: #fff;
+  color: var(--text-inverse);
   padding: 6px;
   border-radius: var(--border-radius-sm);
 }
@@ -90,7 +90,7 @@ body {
 }
 
 .nav-item.active {
-  color: #fff;
+  color: var(--text-inverse);
   background-color: var(--primary);
   box-shadow: 0 4px 14px var(--primary-glow);
 }

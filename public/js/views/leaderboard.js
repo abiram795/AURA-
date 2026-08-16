@@ -64,16 +64,7 @@ const LeaderboardView = {
     if (hasCompletedCourse) earnedBadges.add('b5');
 
     // Courses for certificate checking
-    const completedCourses = [];
-    progressList.forEach(prog => {
-      const course = courses.find(c => c.id === prog.courseId);
-      if (course && (prog.completedAt || prog.completedLessons.length === course.modules.flatMap(m => m.lessons).length)) {
-        completedCourses.push({
-          title: course.title,
-          date: prog.completedAt ? new Date(prog.completedAt).toLocaleDateString() : new Date().toLocaleDateString()
-        });
-      }
-    });
+    const completedCourses = user.certificates || [];
 
     container.innerHTML = `
       <div class="tab-container">
@@ -149,34 +140,67 @@ const LeaderboardView = {
             <p style="color: var(--text-secondary); margin-bottom: var(--spacing-md);">Complete 100% of the lessons in any course to unlock your official Certificate of Completion.</p>
             <a href="#/courses" class="btn btn-primary btn-sm">Browse Courses</a>
           </div>
-        ` : completedCourses.map(cert => `
-          <div class="certificate-container" id="certificate-print-area" style="margin-bottom: var(--spacing-lg);">
-            <div class="certificate-seal">
-              <i class="fa-solid fa-brain"></i>
-            </div>
-            <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--secondary); margin-bottom: var(--spacing-sm);">Official Certificate of Completion</div>
-            <h1 class="certificate-title">AURA AI PLATFORM</h1>
-            <p style="font-size: 14px; color: var(--text-secondary); font-style: italic;">This is proudly presented to</p>
-            <h2 class="certificate-student">${escapeHTML(AppState.currentUser.username)}</h2>
-            <p style="font-size: 14px; color: var(--text-secondary); max-width: 400px; margin: 0 auto;">for successfully mastering all syllabus criteria, lectures, and interactive practical quizzes in</p>
-            <h3 style="font-size: 18px; font-weight: 800; color: var(--primary); margin: var(--spacing-md) 0;">${escapeHTML(cert.title)}</h3>
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: var(--spacing-xl); padding: 0 var(--spacing-xl);">
-              <div style="text-align: left;">
-                <div style="font-size: 12px; font-weight: 700; color: var(--text-primary);">Dr. Sarah Chen</div>
-                <div style="font-size: 10px; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 2px; width: 120px;">Chief Instructor</div>
+        ` : completedCourses.map(cert => {
+          const completionDate = new Date(cert.completedAt).toLocaleDateString();
+          const verificationUrl = `${window.location.origin}/#/verify/${cert.id}`;
+          const qrApi = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(verificationUrl)}`;
+          return `
+            <div class="card" style="margin-bottom: var(--spacing-xl); padding: var(--spacing-lg); background-color: var(--bg-secondary); border: 1px solid var(--border-glass);">
+              
+              <div class="premium-certificate" id="certificate-${cert.id}">
+                <div class="cert-seal-ribbon">
+                  <i class="fa-solid fa-award cert-seal-icon"></i>
+                </div>
+                
+                <div class="cert-header">
+                  <div class="cert-logo"><i class="fa-solid fa-brain"></i> AuraAI</div>
+                  <div class="cert-title-badge">Verified Academic Credential</div>
+                </div>
+
+                <div class="cert-title">Certificate of Completion</div>
+                <div class="cert-subtitle">This official document is proudly presented to</div>
+                <div class="cert-student-name">${escapeHTML(user.username)}</div>
+                
+                <p class="cert-meta-text">
+                  for successfully completing all curriculum requirements, advanced programming assignments, 
+                  and practical evaluation quizzes for the AuraAI professional learning track:
+                  <strong class="cert-course-title">${escapeHTML(cert.courseTitle)}</strong>
+                </p>
+
+                <div class="cert-footer-grid">
+                  <div class="cert-sig-block">
+                    <div class="cert-sig-handwritten">Dr. Sarah Chen</div>
+                    <div class="cert-sig-line">Chief Instructor</div>
+                  </div>
+                  
+                  <div class="cert-qr-block">
+                    <img class="cert-qr-code" src="${qrApi}" alt="Verification Link QR">
+                    <span class="cert-id-tag">${cert.id}</span>
+                  </div>
+
+                  <div class="cert-sig-block">
+                    <div style="font-weight: 600; font-size: 13px; color: #0F172A; font-family: monospace;">${completionDate}</div>
+                    <div class="cert-sig-line">Completion Date</div>
+                  </div>
+                </div>
               </div>
-              <div style="text-align: right;">
-                <div style="font-size: 12px; font-weight: 700; color: var(--text-primary);">${cert.date}</div>
-                <div style="font-size: 10px; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 2px; width: 120px;">Date Completed</div>
+
+              <!-- Sharing & Printing Actions -->
+              <div style="display: flex; gap: var(--spacing-sm); justify-content: center; flex-wrap: wrap; margin-top: var(--spacing-md);">
+                <button class="btn btn-secondary btn-sm" onclick="window.printCertificate('${cert.id}')">
+                  <i class="fa-solid fa-print"></i> Download / Print PDF
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="window.copyVerificationLink('${cert.id}')">
+                  <i class="fa-solid fa-link"></i> Copy Verification Link
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="window.shareCertificate('${escapeHTML(cert.courseTitle)}')">
+                  <i class="fa-solid fa-share-nodes"></i> Share Achievement
+                </button>
               </div>
+
             </div>
-          </div>
-          <div style="text-align: center; margin-top: var(--spacing-sm); margin-bottom: var(--spacing-xl);">
-            <button class="btn btn-secondary btn-sm" onclick="window.print()">
-              <i class="fa-solid fa-print"></i> Print / Save PDF Certificate
-            </button>
-          </div>
-        `).join('')}
+          `;
+        }).join('')}
       </div>
 
       <!-- PROGRESS ANALYTICS TAB -->
@@ -209,7 +233,7 @@ const LeaderboardView = {
       const isCurrentUser = student.id === userId;
       
       return `
-        <tr class="leaderboard-row" style="${isCurrentUser ? 'background-color: rgba(99,102,241,0.08); font-weight: bold; border-left: 3px solid var(--primary);' : ''}">
+        <tr class="leaderboard-row" style="${isCurrentUser ? 'background-color: var(--primary-glow); font-weight: bold; border-left: 3px solid var(--primary);' : ''}">
           <td><span class="${rankClass}">${rankDisplay}</span></td>
           <td>
             <div class="leaderboard-user-cell">
@@ -304,6 +328,20 @@ const LeaderboardView = {
   },
 
   bindEvents(container, studentLeaderboard, instructorsList, userId) {
+    // Re-draw chart on theme toggle event
+    const handleThemeChange = () => {
+      const activeTabBtn = container.querySelector('.tab-btn[data-target="tab-progress-analytics"]');
+      if (activeTabBtn && activeTabBtn.classList.contains('active')) {
+        renderXPChart();
+      }
+    };
+    
+    if (window.onLeaderboardThemeChange) {
+      window.removeEventListener('themechange', window.onLeaderboardThemeChange);
+    }
+    window.onLeaderboardThemeChange = handleThemeChange;
+    window.addEventListener('themechange', window.onLeaderboardThemeChange);
+
     // Bind Tab Switching
     container.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {

@@ -57,7 +57,7 @@
         </a>
       </nav>
       
-      <div class="sidebar-footer" id="sidebar-profile-link">
+      <div class="sidebar-footer" id="sidebar-profile-link" role="link" tabindex="0" aria-label="View Profile" style="cursor: pointer;">
         <img src="" alt="Avatar" class="sidebar-user-avatar" id="sidebar-avatar">
         <div class="sidebar-user-info">
           <span class="sidebar-user-name" id="sidebar-username">Guest</span>
@@ -107,29 +107,12 @@
           </div>
         </div>
 
-        <!-- Language Switcher Dropdown Container -->
-        <div class="language-selector-container" style="position: relative; display: flex; align-items: center;">
-          <button class="setting-icon" id="language-toggle-btn" title="Select Language">
-            <i class="fa-solid fa-globe"></i>
-            <span style="font-size: 11px; margin-left: var(--spacing-xs); font-weight: 700;" id="lang-indicator">EN</span>
-          </button>
-          <div class="language-dropdown" id="language-dropdown" style="display: none; position: absolute; top: calc(100% + var(--spacing-xs)); right: 0; width: 140px; background-color: var(--bg-secondary); border: 1px solid var(--border-glass); border-radius: var(--border-radius-md); box-shadow: var(--shadow-md); flex-direction: column; z-index: 2000; overflow: hidden; padding: 4px 0;">
-            <button class="lang-option-btn" data-lang="en" style="width: 100%; display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: none; border: none; color: var(--text-primary); cursor: pointer; text-align: left; font-size: 13px; font-weight: 500; font-family: var(--font-family); transition: background-color var(--transition-fast);">
-              <span>🇺🇸</span> English
-            </button>
-            <button class="lang-option-btn" data-lang="es" style="width: 100%; display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: none; border: none; color: var(--text-primary); cursor: pointer; text-align: left; font-size: 13px; font-weight: 500; font-family: var(--font-family); transition: background-color var(--transition-fast);">
-              <span>🇪🇸</span> Español
-            </button>
-          </div>
-        </div>
 
-        <!-- Dark Mode Toggle -->
-        <button class="setting-icon" id="theme-toggle-btn" title="Toggle Dark/Light Mode">
-          <i class="fa-solid fa-moon" id="theme-icon"></i>
-        </button>
+
+
 
         <!-- User Role Switcher/Logout Dropdown -->
-        <div class="user-menu-btn" id="logout-btn" title="Switch User / Logout">
+        <div class="user-menu-btn" id="logout-btn" title="Switch User / Logout" role="button" tabindex="0" aria-label="Log Out" style="cursor: pointer;">
           <i class="fa-solid fa-right-from-bracket"></i>
           <span style="font-size: 12px; font-weight: 600;" data-i18n="nav-logout">Exit</span>
         </div>
@@ -143,7 +126,7 @@
   </div>
 
   <!-- Global Fullscreen View for Login/Selector -->
-  <div id="login-view-container" style="width: 100vw; height: 100vh; overflow-y: auto;">
+  <div id="login-view-container" style="width: 100%; min-height: 100vh; overflow-y: auto; background-color: var(--bg-primary); display: none; flex-direction: column; align-items: center; justify-content: center;">
     <!-- Injected by login router view -->
   </div>
 
@@ -163,6 +146,7 @@
   <script src="js/views/instructor.js"></script>
   <script src="js/views/admin.js"></script>
   <script src="js/views/bookmarks.js"></script>
+  <script src="js/views/verify-certificate.js"></script>
   <!-- App Shell -->
   <script src="js/app.js"></script>
 </body>

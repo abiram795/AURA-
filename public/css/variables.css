@@ -34,7 +34,9 @@
 
   --text-primary: #FFFFFF;     /* Heading Text */
   --text-secondary: #CBD5E1;   /* Body Text */
-  --text-muted: #64748B;
+  --text-muted: #94A3B8;       /* Accessibly brightened for dark mode */
+  --text-inverse: #FFFFFF;     /* Pure white for dark components */
+  --text-on-accent: #0F172A;   /* Pure dark for contrast on yellow/bright elements */
 
   /* Brand Accents */
   --primary: #2563EB;          /* Primary AI Blue */
@@ -56,9 +58,40 @@
   --success-glow: rgba(16, 185, 129, 0.2);
   --danger: #EF4444;           /* Bright Coral Red */
   --danger-glow: rgba(239, 68, 68, 0.2);
+  --warning: #F59E0B;          /* Centralized warning amber/gold color */
+  --warning-glow: rgba(245, 158, 11, 0.2);
   
   --level-gradient: linear-gradient(135deg, #7C3AED, #2563EB);
   --card-gradient: linear-gradient(145deg, #1E293B, #0F172A);
+
+  /* Badge System Variables (Accessible Dark Mode) */
+  --badge-primary-bg: rgba(246, 208, 33, 0.15);
+  --badge-primary-text: #FDE047;
+  --badge-primary-border: rgba(246, 208, 33, 0.3);
+  
+  --badge-secondary-bg: rgba(255, 255, 255, 0.06);
+  --badge-secondary-text: #E2E8F0;
+  --badge-secondary-border: rgba(255, 255, 255, 0.1);
+  
+  --badge-success-bg: rgba(6, 182, 212, 0.15);
+  --badge-success-text: #22D3EE;
+  --badge-success-border: rgba(6, 182, 212, 0.3);
+  
+  --badge-warning-bg: rgba(232, 26, 111, 0.15);
+  --badge-warning-text: #F472B6;
+  --badge-warning-border: rgba(232, 26, 111, 0.3);
+
+  /* Quiz Option States (Accessible Dark Mode) */
+  --quiz-correct-bg: rgba(16, 185, 129, 0.15);
+  --quiz-correct-text: #34D399;
+  --quiz-correct-border: #059669;
+  
+  --quiz-wrong-bg: rgba(239, 68, 68, 0.15);
+  --quiz-wrong-text: #F87171;
+  --quiz-wrong-border: #DC2626;
+  
+  --quiz-selected-bg: rgba(246, 208, 33, 0.1);
+  --quiz-selected-border: #F6D021;
 }
 
 /* LIGHT THEME MODIFIERS */
@@ -71,8 +104,10 @@ body.light-mode {
   --border-color: rgba(51, 65, 85, 0.08);
 
   --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
+  --text-secondary: #334155;   /* Darkened for WCAG AA compliance */
+  --text-muted: #57687C;       /* Accessible contrast ratio (>5:1) on white */
+  --text-inverse: #FFFFFF;
+  --text-on-accent: #0F172A;
 
   --primary: #2563EB;
   --primary-hover: #1D4ED8;
@@ -86,7 +121,44 @@ body.light-mode {
   --accent-hover: #0891B2;
   --accent-glow: rgba(6, 182, 212, 0.15);
 
+  --warning: #D97706;          /* Darker amber warning color for contrast in light mode */
+  --warning-glow: rgba(217, 119, 6, 0.15);
+
   --card-gradient: linear-gradient(145deg, #FFFFFF, #F8FAFC);
+  
+  /* Soft shadows for premium light mode appearance */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.09);
+
+  /* Badge System Variables (Accessible Light Mode) */
+  --badge-primary-bg: rgba(246, 208, 33, 0.12);
+  --badge-primary-text: #854D0E;
+  --badge-primary-border: rgba(246, 208, 33, 0.3);
+  
+  --badge-secondary-bg: rgba(0, 0, 0, 0.05);
+  --badge-secondary-text: #334155;
+  --badge-secondary-border: rgba(0, 0, 0, 0.08);
+  
+  --badge-success-bg: rgba(37, 99, 235, 0.08);
+  --badge-success-text: #1D4ED8;
+  --badge-success-border: rgba(37, 99, 235, 0.2);
+  
+  --badge-warning-bg: rgba(232, 26, 111, 0.08);
+  --badge-warning-text: #BE185D;
+  --badge-warning-border: rgba(232, 26, 111, 0.2);
+
+  /* Quiz Option States (Accessible Light Mode) */
+  --quiz-correct-bg: rgba(16, 185, 129, 0.08);
+  --quiz-correct-text: #065F46;
+  --quiz-correct-border: #10B981;
+  
+  --quiz-wrong-bg: rgba(239, 68, 68, 0.08);
+  --quiz-wrong-text: #991B1B;
+  --quiz-wrong-border: #EF4444;
+  
+  --quiz-selected-bg: rgba(246, 208, 33, 0.1);
+  --quiz-selected-border: #D97706;
 }
 
 /* ====================================================

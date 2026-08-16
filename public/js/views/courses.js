@@ -12,7 +12,14 @@ window.showCheckoutModal = (course, callback) => {
       </div>
 
       <div style="display: flex; gap: var(--spacing-md); background-color: var(--bg-secondary); padding: var(--spacing-md); border-radius: var(--border-radius-md); border: 1px solid var(--border-color);">
-        <img src="${course.image}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\' viewBox=\'0 0 60 60\'><rect width=\'100%\' height=\'100%\' fill=\'%231E293B\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2364748B\' font-family=\'sans-serif\' font-size=\'10\'>AI</text></svg>';" style="width: 60px; height: 60px; border-radius: var(--border-radius-sm); object-fit: cover;">
+        <div class="course-card-img-wrapper skeleton" style="width: 60px; height: 60px; border-radius: var(--border-radius-sm); flex-shrink: 0;">
+          <img src="${course.image}" 
+               loading="lazy"
+               onload="this.parentElement.classList.remove('skeleton');"
+               onerror="this.onerror=null; this.src=window.getCoursePlaceholderSVG('${escapeHTML(course.title)}', '${escapeHTML(course.category)}'); this.parentElement.classList.remove('skeleton');" 
+               style="width: 100%; height: 100%; object-fit: cover;" 
+               alt="${escapeHTML(course.title)}">
+        </div>
         <div style="display: flex; flex-direction: column; justify-content: center; overflow: hidden;">
           <span style="font-size: 10px; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${course.category}</span>
           <h4 style="font-size: 13px; font-weight: 800; margin: 2px 0; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${course.title}</h4>
@@ -128,26 +135,43 @@ const CoursesView = {
         const isPurchased = c.price === 0 || isAdmin || purchasedCourseIds.has(c.id);
         const lessonCount = c.modules ? c.modules.flatMap(m => m.lessons).length : 0;
         
-        let actionBtnText = 'Enroll Now';
+        let actionBtnText = 'Enroll Free';
         let badgeHtml = `<span class="badge badge-secondary"><i class="fa-solid fa-plus"></i> Available</span>`;
 
         if (isAdmin) {
           actionBtnText = 'Inspect Course';
           badgeHtml = `<span class="badge badge-primary"><i class="fa-solid fa-screwdriver-wrench"></i> Admin Access</span>`;
-        } else if (isEnrolled && isPurchased) {
-          actionBtnText = 'Continue';
-          badgeHtml = `<span class="badge badge-primary"><i class="fa-solid fa-circle-play"></i> Enrolled</span>`;
+        } else if (isPurchased) {
+          const prog = progressList.find(p => p.courseId === c.id);
+          const totalLessons = c.modules ? c.modules.flatMap(m => m.lessons).length : 0;
+          const completedCount = prog ? prog.completedLessons.length : 0;
+          const progressPercent = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+
+          if (progressPercent === 100 || (prog && prog.completedAt)) {
+            actionBtnText = 'Completed';
+            badgeHtml = `<span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> Completed</span>`;
+          } else if (progressPercent > 0) {
+            actionBtnText = 'Continue Learning';
+            badgeHtml = `<span class="badge badge-primary"><i class="fa-solid fa-circle-play"></i> In Progress</span>`;
+          } else {
+            actionBtnText = 'Resume Course';
+            badgeHtml = `<span class="badge badge-primary"><i class="fa-solid fa-circle-play"></i> Enrolled</span>`;
+          }
         } else if (!isPurchased) {
           actionBtnText = `Buy ₹${(Number(c.price) || 0).toFixed(2)}`;
           badgeHtml = `<span class="badge badge-warning"><i class="fa-solid fa-lock"></i> Paid</span>`;
-        } else if (c.price === 0) {
-          actionBtnText = 'Enroll Free';
-          badgeHtml = `<span class="badge badge-success"><i class="fa-solid fa-gift"></i> Free</span>`;
         }
 
         return `
           <div class="card course-card" data-id="${c.id}">
-            <img src="${c.image}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'300\' viewBox=\'0 0 500 300\'><rect width=\'100%\' height=\'100%\' fill=\'%231E293B\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2364748B\' font-family=\'sans-serif\' font-size=\'20\'>AuraAI Course</text></svg>';" alt="${escapeHTML(c.title)}" class="course-card-img">
+            <div class="course-card-img-wrapper skeleton">
+              <img src="${c.image}" 
+                   loading="lazy"
+                   onload="this.parentElement.classList.remove('skeleton');"
+                   onerror="this.onerror=null; this.src=window.getCoursePlaceholderSVG('${escapeHTML(c.title)}', '${escapeHTML(c.category)}'); this.parentElement.classList.remove('skeleton');" 
+                   alt="${escapeHTML(c.title)}" 
+                   class="course-card-img">
+            </div>
             <div class="course-card-content">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
                 <span class="badge badge-secondary">${escapeHTML(c.category)}</span>
@@ -192,7 +216,12 @@ const CoursesView = {
 
             if (isAdmin) {
               window.location.hash = `#/course/${courseId}`;
-            } else if (isEnrolled && isPurchased) {
+            } else if (isPurchased) {
+              if (!isEnrolled) {
+                // Auto enroll previously purchased or free
+                await API.enroll(currentUserId, courseId);
+                enrolledCourseIds.add(courseId);
+              }
               window.location.hash = `#/course/${courseId}`;
             } else if (!isPurchased) {
               // Trigger secure checkout
@@ -200,17 +229,8 @@ const CoursesView = {
                 await API.purchase(currentUserId, courseId);
                 purchasedCourseIds.add(courseId);
                 enrolledCourseIds.add(courseId);
-                // Redirect immediately to course details
                 window.location.hash = `#/course/${courseId}`;
               });
-            } else {
-              // Free course enrollment
-              const btn = card.querySelector('.course-action-btn');
-              btn.disabled = true;
-              btn.innerHTML = `<span class="spinner btn-sm"></span>`;
-              await API.enroll(currentUserId, courseId);
-              enrolledCourseIds.add(courseId);
-              window.location.hash = `#/course/${courseId}`;
             }
           } else {
             // Card click goes to course page (it will display lock screen if unpaid)

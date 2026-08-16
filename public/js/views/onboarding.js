@@ -70,6 +70,8 @@ const OnboardingView = {
         // Post interests to server
         const updatedUser = await API.updateUser(AppState.currentUser.id, { interests: interestsArray });
         AppState.setUser(updatedUser);
+        // Clear the onboarding session flag
+        sessionStorage.removeItem('aura_needs_onboarding');
 
         // Get matching courses to auto-enroll or recommend
         const courses = await API.getCourses();
@@ -96,10 +98,17 @@ const OnboardingView = {
             <div style="display: flex; flex-direction: column; gap: var(--spacing-md); text-align: left; margin-bottom: var(--spacing-xl);">
               ${matchingCourses.map(c => `
                 <div style="display: flex; gap: var(--spacing-md); background-color: var(--bg-tertiary); padding: var(--spacing-md); border-radius: var(--border-radius-md); border: 1px solid var(--border-glass);">
-                  <img src="${c.image}" style="width: 60px; height: 60px; border-radius: var(--border-radius-sm); object-fit: cover;">
+                  <div class="course-card-img-wrapper skeleton" style="width: 60px; height: 60px; border-radius: var(--border-radius-sm); flex-shrink: 0; overflow: hidden; background-color: var(--bg-tertiary);">
+                    <img src="${c.image}" 
+                         loading="lazy"
+                         onload="this.parentElement.classList.remove('skeleton');"
+                         onerror="this.onerror=null; this.src=window.getCoursePlaceholderSVG('${escapeHTML(c.title)}', '${escapeHTML(c.category)}'); this.parentElement.classList.remove('skeleton');" 
+                         style="width: 100%; height: 100%; object-fit: cover;"
+                         alt="${escapeHTML(c.title)}">
+                  </div>
                   <div>
                     <h4 style="font-size: 14px; font-weight: 700;">${escapeHTML(c.title)}</h4>
-                    <p style="font-size: 12px; color: var(--text-muted);">${escapeHTML(c.description)}</p>
+                    <p style="font-size: 12px; color: var(--color-text-muted);">${escapeHTML(c.description)}</p>
                   </div>
                 </div>
               `).join('')}

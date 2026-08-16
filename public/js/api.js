@@ -1,6 +1,6 @@
 // Configure your live hosted backend URL below (e.g. on Render, Heroku, or Railway)
 // If left empty, it will default to http://localhost:3000 during local development.
-const PRODUCTION_API_URL = 'https://aura-xv1e.onrender.com'; // <-- PASTE YOUR LIVE BACKEND URL HERE (e.g., 'https://auraai-backend.onrender.com')
+const PRODUCTION_API_URL = ''; // <-- PASTE YOUR LIVE BACKEND URL HERE (e.g., 'https://auraai-backend.onrender.com')
 
 const API_BASE = PRODUCTION_API_URL
   ? PRODUCTION_API_URL
@@ -112,6 +112,7 @@ const API = {
       return {
         id,
         username: id === 'u1' ? 'Abiram Sureshbabu' : 'Dr. Sarah Chen',
+        email: id === 'u1' ? 'student@auraai.com' : 'instructor@auraai.com',
         role: id === 'u1' ? 'student' : 'instructor',
         avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${id === 'u1' ? 'Abiram' : 'Sarah'}`,
         bio: 'Bio details cached offline.',
@@ -353,5 +354,16 @@ const API = {
       method: 'POST',
       body: JSON.stringify({ rating, raterId })
     });
+  },
+
+  async saveTimestamp(userId, courseId, moduleId, lessonId, timestamp) {
+    return this.request('/api/progress/save-timestamp', {
+      method: 'POST',
+      body: JSON.stringify({ userId, courseId, moduleId, lessonId, timestamp })
+    });
+  },
+
+  async verifyCertificate(certId) {
+    return this.request(`/api/progress/certificate/verify/${certId}`);
   }
 };
