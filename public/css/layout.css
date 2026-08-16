@@ -633,3 +633,8 @@ body {
     z-index: 2000 !important;
   }
 }
+
+/* Language selector dropdown options hover transition */
+.lang-option-btn:hover {
+  background-color: var(--bg-tertiary) !important;
+}

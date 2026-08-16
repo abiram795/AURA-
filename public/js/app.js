@@ -24,14 +24,56 @@ const AppShell = {
     AppState.applyTranslations();
     const btn = document.getElementById('language-toggle-btn');
     const indicator = document.getElementById('lang-indicator');
-    if (btn) {
-      // Set initial
+    const dropdown = document.getElementById('language-dropdown');
+    
+    if (btn && dropdown) {
+      // Set initial state
       indicator.textContent = AppState.currentLanguage.toUpperCase();
-      
-      btn.addEventListener('click', () => {
-        const nextLang = AppState.currentLanguage === 'en' ? 'es' : 'en';
-        AppState.saveLanguage(nextLang);
-        indicator.textContent = nextLang.toUpperCase();
+      this.updateActiveLanguageClass();
+
+      // Show/Hide dropdown toggle
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // Close other open dropdowns
+        const notifDropdown = document.getElementById('notif-dropdown');
+        if (notifDropdown) notifDropdown.style.display = 'none';
+        
+        const isVisible = dropdown.style.display === 'flex';
+        dropdown.style.display = isVisible ? 'none' : 'flex';
+      });
+
+      // Handle language selection options click
+      dropdown.querySelectorAll('.lang-option-btn').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const selectedLang = opt.getAttribute('data-lang');
+          AppState.saveLanguage(selectedLang);
+          indicator.textContent = selectedLang.toUpperCase();
+          dropdown.style.display = 'none';
+          this.updateActiveLanguageClass();
+        });
+      });
+
+      // Close dropdown if clicked outside
+      document.addEventListener('click', () => {
+        dropdown.style.display = 'none';
+      });
+    }
+  },
+
+  updateActiveLanguageClass() {
+    const dropdown = document.getElementById('language-dropdown');
+    if (dropdown) {
+      dropdown.querySelectorAll('.lang-option-btn').forEach(opt => {
+        const lang = opt.getAttribute('data-lang');
+        if (lang === AppState.currentLanguage) {
+          opt.style.backgroundColor = 'var(--primary-glow)';
+          opt.style.color = 'var(--primary)';
+          opt.style.fontWeight = '700';
+        } else {
+          opt.style.backgroundColor = 'transparent';
+          opt.style.color = 'var(--text-primary)';
+          opt.style.fontWeight = '500';
+        }
       });
     }
   },

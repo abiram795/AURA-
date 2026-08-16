@@ -12,7 +12,7 @@ window.showCheckoutModal = (course, callback) => {
       </div>
 
       <div style="display: flex; gap: var(--spacing-md); background-color: var(--bg-secondary); padding: var(--spacing-md); border-radius: var(--border-radius-md); border: 1px solid var(--border-color);">
-        <img src="${course.image}" style="width: 60px; height: 60px; border-radius: var(--border-radius-sm); object-fit: cover;">
+        <img src="${course.image}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'60\' viewBox=\'0 0 60 60\'><rect width=\'100%\' height=\'100%\' fill=\'%231E293B\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2364748B\' font-family=\'sans-serif\' font-size=\'10\'>AI</text></svg>';" style="width: 60px; height: 60px; border-radius: var(--border-radius-sm); object-fit: cover;">
         <div style="display: flex; flex-direction: column; justify-content: center; overflow: hidden;">
           <span style="font-size: 10px; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${course.category}</span>
           <h4 style="font-size: 13px; font-weight: 800; margin: 2px 0; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${course.title}</h4>
@@ -147,7 +147,7 @@ const CoursesView = {
 
         return `
           <div class="card course-card" data-id="${c.id}">
-            <img src="${c.image}" alt="${escapeHTML(c.title)}" class="course-card-img">
+            <img src="${c.image}" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'500\' height=\'300\' viewBox=\'0 0 500 300\'><rect width=\'100%\' height=\'100%\' fill=\'%231E293B\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2364748B\' font-family=\'sans-serif\' font-size=\'20\'>AuraAI Course</text></svg>';" alt="${escapeHTML(c.title)}" class="course-card-img">
             <div class="course-card-content">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
                 <span class="badge badge-secondary">${escapeHTML(c.category)}</span>
