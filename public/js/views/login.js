@@ -20,7 +20,12 @@ const LoginView = {
             <!-- Password -->
             <div class="form-group" style="text-align: left;">
               <label for="login-password-input">Password</label>
-              <input type="password" id="login-password-input" placeholder="••••••••" required style="width: 100%;">
+              <div style="position: relative; width: 100%;">
+                <input type="password" id="login-password-input" placeholder="••••••••" required style="width: 100%; padding-right: 40px;">
+                <button type="button" id="password-toggle-btn" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: var(--spacing-xs); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: color var(--transition-fast); z-index: 10;" aria-label="Toggle password visibility">
+                  <i class="fa-solid fa-eye" id="password-toggle-icon"></i>
+                </button>
+              </div>
             </div>
 
             <!-- Error message container -->
@@ -84,6 +89,17 @@ const LoginView = {
     const passwordInput = container.querySelector('#login-password-input');
     const errorEl = container.querySelector('#login-form-error');
     const submitBtn = container.querySelector('#login-submit-btn');
+
+    // Toggle password visibility
+    const passwordToggleBtn = container.querySelector('#password-toggle-btn');
+    const passwordToggleIcon = container.querySelector('#password-toggle-icon');
+    if (passwordToggleBtn && passwordInput && passwordToggleIcon) {
+      passwordToggleBtn.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        passwordToggleIcon.className = isPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+      });
+    }
 
     const googleBtn = container.querySelector('#google-login-btn');
     const googleOverlay = container.querySelector('#google-auth-overlay');
